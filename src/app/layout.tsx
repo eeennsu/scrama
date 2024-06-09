@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
-import { Header } from '@/widgets/layout'
+import { Inter } from 'next/font/google'
+import { Header } from '@/features/layout/header'
 import '@/shared/css/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
-const spaceGrotesk = Space_Grotesk({
-    subsets: ['latin'],
-    weight: ['300', '400', '500', '600', '700'],
-})
+// const spaceGrotesk = Space_Grotesk({
+//     subsets: ['latin'],
+//     weight: ['300', '400', '500', '600', '700'],
+// })
 
 export const metadata: Metadata = {
     title: 'Procewose',
@@ -23,10 +23,11 @@ export default function RootLayout({
         <html lang='en'>
             <body className={inter.className}>
                 <div className='flex flex-col w-full min-h-dvh'>
-                    <Header />
-                    <section className='flex-1 flex flex-col w-full bg-blue-900'>
+                    <div className='max-w-11xl w-full mx-auto flex flex-col flex-1'>
+                        <Header />
                         {children}
-                    </section>
+                    </div>
+                    <footer className='bg-neutral-600'>hello</footer>
                 </div>
             </body>
         </html>
