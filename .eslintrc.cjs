@@ -1,11 +1,13 @@
 module.exports = {
     extends: [
         'next/core-web-vitals',
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
         'plugin:eslint-plugin-import/recommended',
         'plugin:react-hooks/recommended',
         'eslint-config-prettier',
         'prettier',
-        'plugin:storybook/recommended',
+        // 'plugin:storybook/recommended',
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -17,6 +19,7 @@ module.exports = {
         es2020: true,
     },
     rules: {
+        '@typescript-eslint/no-unused-vars': 'warn',
         'tailwindcss/no-custom-classname': 'off',
         'react/react-in-jsx-scope': 'off',
         'react/require-default-props': 'off',
@@ -74,17 +77,17 @@ module.exports = {
                 'import/no-extraneous-dependencies': 'error',
             },
         },
-        {
-            files: ['**/__tests__/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
-            extends: ['plugin:testing-library/react'],
-            rules: {
-                'testing-library/no-debugging-utils': 'warn',
-                'import/no-extraneous-dependencies': [
-                    'error',
-                    { devDependencies: true },
-                ],
-            },
-        },
+        // {
+        //     files: ['**/__tests__/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
+        //     extends: ['plugin:testing-library/react'],
+        //     rules: {
+        //         'testing-library/no-debugging-utils': 'warn',
+        //         'import/no-extraneous-dependencies': [
+        //             'error',
+        //             { devDependencies: true },
+        //         ],
+        //     },
+        // },
     ],
     settings: {
         'import/resolver': {
