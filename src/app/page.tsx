@@ -1,5 +1,7 @@
 import type { NextPage } from 'next'
+import { Searchbar } from '@/features/main'
 import Image from 'next/image'
+import { HeroCarousel } from '@/features/main/hero-carousel'
 
 const MainPage: NextPage = () => {
     return (
@@ -24,9 +26,9 @@ const MainPage: NextPage = () => {
                             Powerful, self-serve product and growth analytics to
                             help you convert, engage, and retain more.
                         </p>
-                        Searchbar
+                        <Searchbar />
                     </div>
-                    HeroCarousel
+                    <HeroCarousel />
                 </div>
             </section>
             <section className='trending-section'>
