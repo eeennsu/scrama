@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { Searchbar } from '@/features/main'
-import Image from 'next/image'
 import { HeroCarousel } from '@/features/main/hero-carousel'
+import Image from 'next/image'
 
 const MainPage: NextPage = () => {
     return (

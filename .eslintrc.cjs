@@ -20,6 +20,7 @@ module.exports = {
     },
     rules: {
         '@typescript-eslint/no-unused-vars': 'warn',
+        '@typescript-eslint/no-explicit-any': 'off',
         'tailwindcss/no-custom-classname': 'off',
         'react/react-in-jsx-scope': 'off',
         'react/require-default-props': 'off',
@@ -57,6 +58,7 @@ module.exports = {
         ],
         'import/no-extraneous-dependencies': 'error',
         'import/prefer-default-export': 'off',
+        'import/no-unresolved': 'off',
     },
     overrides: [
         {
@@ -100,6 +102,7 @@ module.exports = {
                     'src/entities',
                     'src/shared',
                 ],
+                extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
             },
             typescript: {
                 alwaysTryTypes: true,
