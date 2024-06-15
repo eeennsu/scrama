@@ -63,3 +63,12 @@ export async function scrapeAmazonProduct(productUrl: string) {
         throw new Error(`Failed to scrape product: ${error.message}`)
     }
 }
+
+// export async function getAllProducts() {
+//     try {
+
+//     } catch (error: any) {
+//         console.error(error)
+//         throw new Error(`Failed to fetch products: ${error.message}`)
+//     }
+// }

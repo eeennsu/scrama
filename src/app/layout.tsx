@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Header } from '@/features/layout/header'
+import { Header } from '@/widgets/layout/header'
 import '@/shared/css/globals.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
 
