@@ -4,7 +4,7 @@ import { scrapeAndStoreProduct } from '@/entities/product'
 import { AmazonProductType } from '@/entities/product/product.types'
 import { Button } from '@/shared/ui/components/button'
 
-import { converAmazonLink } from '@/shared/utils'
+import { converAmazonLink, isValidAmazonLink } from '@/shared/utils'
 import { FormEvent, useState, type FC } from 'react'
 import { ProductCard } from './product-card'
 
@@ -15,14 +15,12 @@ export const Searchbar: FC = () => {
         AmazonProductType[]
     >([])
 
-    console.log(searchedProducts)
-
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        const amazonProductLink = converAmazonLink(searchText)
+        const isValid = isValidAmazonLink(searchText)
 
-        if (amazonProductLink === '' || !amazonProductLink) {
+        if (!isValid) {
             alert('유효하지 않은 검색입니다. 다시 시도해주세요')
             return
         }
@@ -30,10 +28,9 @@ export const Searchbar: FC = () => {
         try {
             setIsLoading(true)
 
-            const searchedProducts =
-                await scrapeAndStoreProduct(amazonProductLink)
+            const searchedProducts = await scrapeAndStoreProduct(searchText)
 
-            searchedProducts && setSearchedProducts(searchedProducts)
+            // searchedProducts && setSearchedProducts(searchedProducts)
         } catch (error: any) {
             throw new Error(error)
         } finally {
@@ -66,7 +63,7 @@ export const Searchbar: FC = () => {
                     searchedProducts.length > 0 &&
                     searchedProducts?.map((product) => (
                         <ProductCard
-                            key={product.link}
+                            key={product.title}
                             product={product}
                         />
                     ))}

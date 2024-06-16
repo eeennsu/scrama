@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const ProductCard: FC<Props> = ({ product }) => {
-    const Comp = product?.link ? Link : Fragment
+    const Comp = !!product?.link ? Link : Fragment
 
     return (
         <Comp

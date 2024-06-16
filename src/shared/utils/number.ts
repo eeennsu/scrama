@@ -1,3 +1,6 @@
-export const formatPrice = (price: number) => {
-    return `${price.toFixed(2)} (USD)`
+export const formatPrice = (price: number): string => {
+    return price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    })
 }

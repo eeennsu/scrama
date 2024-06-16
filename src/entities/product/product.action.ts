@@ -1,63 +1,103 @@
 'use server'
 
 import type { AmazonProductType } from './product.types'
-import { generateTitle } from '@/shared/utils'
-import { load } from 'cheerio'
+import { checkEnvVariable, extractPrice } from '@/shared/utils'
+import * as cheerio from 'cheerio'
+import axios from 'axios'
 
-export async function scrapeAndStoreProduct(productUrl: string) {
+export async function scrapeAndStoreProduct(url: string) {
     try {
-        const scrapedProduct = await scrapeAmazonProduct(productUrl)
-
-        const $ = load(scrapedProduct)
-        const products: AmazonProductType[] = []
-
-        $('.s-result-item').each((i, el) => {
-            const product = $(el)
-
-            const priceWhole = product.find('.a-price-whole').text()
-            const priceFraction = product.find('.a-price-fraction').text()
-            const price = priceWhole + priceFraction
-            const image = product.find('.s-image').attr('src')
-            const link = product
-                .find('.a-link-normal.a-text-normal')
-                .attr('href')
-            const title = generateTitle(product, link)
-
-            if (title !== '' && price !== '') {
-                products.push({
-                    title,
-                    price,
-                    image,
-                    link,
-                })
-            }
-        })
-
-        return products
+        const scrapedProduct = await scrapeAmazonProduct(url)
     } catch (error: any) {
         console.error(error)
         throw new Error(`Failed to create/update product: ${error.message}`)
     }
 }
 
-export async function scrapeAmazonProduct(productUrl: string) {
+export async function scrapeAmazonProduct(
+    url: string
+): Promise<AmazonProductType> {
+    const username = String(checkEnvVariable(process.env.BRIGHT_DATA_USERNAME))
+
+    const password = String(checkEnvVariable(process.env.BRIGHT_DATA_PASSWORD))
+
+    const port = Number(checkEnvVariable(process.env.BRIGHT_DATA_PORT))
+    const sessionId =
+        Date.now().toString(36) + Math.random().toString(36).substr(2)
+    const options = {
+        auth: {
+            username: `${username}-session-${sessionId}`,
+            password,
+        },
+        host: 'brd.superproxy.io',
+        port,
+        rejectUnauthorized: false,
+    }
+
     try {
-        // BrightData proxy configuration
+        const { data } = await axios.get(url, options)
+        const $ = cheerio.load(data)
 
-        const response = await fetch(productUrl, {
-            headers: {
-                'User-Agent':
-                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+        const id = $('[data-component-type="s-search-result"]')
+            .first()
+            .attr('data-asin')
+
+        const title = $('#productTitle').text().trim()
+
+        const discountedPrice = extractPrice(
+            $('span.a-price span.a-offscreen'),
+            $('.priceToPay span.a-price-whole'),
+            $('a.size.base .a-color-price'),
+            $('.a-button-selected .a-color-base'),
+            $('.a-price.a-text-price')
+        )
+
+        const originalPrice = extractPrice(
+            $('#priceblock_ourprice'),
+            $('.a-price.a-text-price span.a-offscreen'),
+            $('#listPrice'),
+            $('#priceblock_dealprice'),
+            $('.a-size-base.a-color-price')
+        )
+        const discountedPercent = +$('.savingPercentage')
+            .text()
+            .replace(/[-%]/g, '')
+
+        const currency = $('.a-price-symbol').text().trim().slice(0, 1)
+
+        const availabilty = $('#availability').text().trim().toLocaleLowerCase()
+
+        const images =
+            $('#imglbkFront').attr('data-a-dynamic-image') ||
+            $('#landingImage').attr('data-a-dynamic-image')
+
+        const imageUrls = Object.keys(JSON.parse(images || '{}'))
+
+        const star = $('#acrPopover')
+            .attr('title')
+            ?.match(/[\d.]+/)
+            ?.at(0)
+
+        const brand = $('#bylineInfo').text().trim().split(' ')?.at(2)
+
+        const amazonProduct: AmazonProductType = {
+            id,
+            title,
+            price: {
+                discountedPrice,
+                discountedPercent: discountedPercent || undefined,
+                originalPrice,
+                currency: currency || '$',
             },
-        })
-
-        if (!response.ok) {
-            throw new Error(`http error status: ${response.statusText}`)
+            imageUrls,
+            isAvaliable: availabilty === 'in stock',
+            brand,
+            star: Number(star) || undefined,
         }
 
-        const data = await response.text()
+        console.log(amazonProduct)
 
-        return data
+        return amazonProduct
     } catch (error: any) {
         console.error(error)
         throw new Error(`Failed to scrape product: ${error.message}`)
