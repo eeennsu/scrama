@@ -9,19 +9,21 @@ import {
 import * as cheerio from 'cheerio'
 import axios from 'axios'
 
-export async function scrapeAndStoreProduct(url: string) {
+export async function scrapeAndStoreDetailProduct(url: string) {
     try {
         // connectToDB()
 
-        const scrapedProduct = await scrapeAmazonProduct(url)
+        const scrapedProduct = await scrapeDetailAmazonProduct(url)
 
         if (!scrapedProduct) return
+
+        // TODO: scrapeAmazonProduct list
     } catch (error: any) {
         throw new Error(`Failed to create/update product: ${error.message}`)
     }
 }
 
-export async function scrapeAmazonProduct(
+export async function scrapeDetailAmazonProduct(
     url: string
 ): Promise<AmazonProductType> {
     const username = String(checkEnvVariable(process.env.BRIGHT_DATA_USERNAME))

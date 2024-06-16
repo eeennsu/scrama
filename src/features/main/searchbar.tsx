@@ -1,9 +1,8 @@
 'use client'
 
-import { scrapeAndStoreProduct } from '@/entities/product'
+import { scrapeAndStoreDetailProduct } from '@/entities/product'
 import { AmazonProductType } from '@/entities/product/product.types'
 import { Button } from '@/shared/ui/components/button'
-
 import { converAmazonLink, isValidAmazonLink } from '@/shared/utils'
 import { FormEvent, useState, type FC } from 'react'
 import { ProductCard } from './product-card'
@@ -28,7 +27,8 @@ export const Searchbar: FC = () => {
         try {
             setIsLoading(true)
 
-            const searchedProducts = await scrapeAndStoreProduct(searchText)
+            const searchedProducts =
+                await scrapeAndStoreDetailProduct(searchText)
 
             // searchedProducts && setSearchedProducts(searchedProducts)
         } catch (error: any) {
