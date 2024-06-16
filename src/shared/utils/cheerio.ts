@@ -48,3 +48,14 @@ export const extractPrice = (...elements: Cheerio<Element>[]): number => {
 
     return Number(foundPrice)
 }
+
+export const extractDescriptions = (element: Cheerio<Element>): string[] => {
+    const descriptions = [] as string[]
+
+    element.find('span.a-list-item').each((i, el) => {
+        const description = cheerio(el).text().trim()
+        descriptions.push(description)
+    })
+
+    return descriptions
+}

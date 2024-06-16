@@ -43,19 +43,27 @@ export const Searchbar: FC = () => {
             <form
                 className='flex flex-wrap gap-4 mt-12 items-center'
                 onSubmit={handleSubmit}
+                onReset={() => setSearchText('')}
             >
                 <input
                     type='text'
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
-                    placeholder='Enter product link'
+                    placeholder='Enter amazon product link'
                     className='searchbar-input'
                 />
+                <Button
+                    type='reset'
+                    variant='outline'
+                    disabled={isLoading}
+                >
+                    reset
+                </Button>
                 <Button
                     type='submit'
                     disabled={searchText.length <= 2 || isLoading}
                 >
-                    {isLoading ? 'Searching...' : 'Search'}
+                    {isLoading ? 'Loading...' : 'Search'}
                 </Button>
             </form>
             <div className='flex flex-wrap gap-4'>

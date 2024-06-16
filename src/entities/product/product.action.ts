@@ -1,15 +1,22 @@
 'use server'
 
 import type { AmazonProductType } from './product.types'
-import { checkEnvVariable, extractPrice } from '@/shared/utils'
+import {
+    checkEnvVariable,
+    extractDescriptions,
+    extractPrice,
+} from '@/shared/utils'
 import * as cheerio from 'cheerio'
 import axios from 'axios'
 
 export async function scrapeAndStoreProduct(url: string) {
     try {
+        // connectToDB()
+
         const scrapedProduct = await scrapeAmazonProduct(url)
+
+        if (!scrapedProduct) return
     } catch (error: any) {
-        console.error(error)
         throw new Error(`Failed to create/update product: ${error.message}`)
     }
 }
@@ -67,11 +74,13 @@ export async function scrapeAmazonProduct(
 
         const availabilty = $('#availability').text().trim().toLocaleLowerCase()
 
-        const images =
+        const imageElements =
             $('#imglbkFront').attr('data-a-dynamic-image') ||
             $('#landingImage').attr('data-a-dynamic-image')
 
-        const imageUrls = Object.keys(JSON.parse(images || '{}'))
+        const images = Object.keys(JSON.parse(imageElements || '{}'))
+
+        const descriptions = extractDescriptions($('#feature-bullets'))
 
         const star = $('#acrPopover')
             .attr('title')
@@ -89,7 +98,8 @@ export async function scrapeAmazonProduct(
                 originalPrice,
                 currency: currency || '$',
             },
-            imageUrls,
+            images,
+            descriptions,
             isAvaliable: availabilty === 'in stock',
             brand,
             star: Number(star) || undefined,
@@ -99,7 +109,6 @@ export async function scrapeAmazonProduct(
 
         return amazonProduct
     } catch (error: any) {
-        console.error(error)
         throw new Error(`Failed to scrape product: ${error.message}`)
     }
 }
