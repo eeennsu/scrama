@@ -1,9 +1,9 @@
 'use client'
 
-import { scrapeAndStoreDetailProduct } from '@/entities/product'
+import { scrapeDetailAmazonProduct } from '@/entities/product'
 import { AmazonProductType } from '@/entities/product/product.types'
 import { Button } from '@/shared/ui/components/button'
-import { converAmazonLink, isValidAmazonLink } from '@/shared/utils'
+import { converAmazonLink } from '@/shared/utils'
 import { FormEvent, useState, type FC } from 'react'
 import { ProductCard } from './product-card'
 
@@ -17,20 +17,19 @@ export const Searchbar: FC = () => {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        const isValid = isValidAmazonLink(searchText)
-
-        if (!isValid) {
-            alert('유효하지 않은 검색입니다. 다시 시도해주세요')
+        if (searchText.length <= 1) {
+            alert('Please enter a valid amazon product link')
             return
         }
+
+        const searchLink = converAmazonLink(searchText)
 
         try {
             setIsLoading(true)
 
-            const searchedProducts =
-                await scrapeAndStoreDetailProduct(searchText)
+            const searchedProducts = await scrapeDetailAmazonProduct(searchLink)
 
-            // searchedProducts && setSearchedProducts(searchedProducts)
+            // TODO: Implement the search functionality
         } catch (error: any) {
             throw new Error(error)
         } finally {

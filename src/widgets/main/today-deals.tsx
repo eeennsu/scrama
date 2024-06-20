@@ -1,7 +1,8 @@
+import { scrapeTodayDealsAmazonProducts } from '@/entities/product'
 import type { FC } from 'react'
 
-export const TrendingProducts: FC = async () => {
-    // const allProducts = await getAllProducts()
+export const TodayDeals: FC = async () => {
+    const todayDealsProduct = await scrapeTodayDealsAmazonProducts()
 
     return (
         <section className='trending-section'>

@@ -7,25 +7,9 @@ import {
     extractPrice,
 } from '@/shared/utils'
 import * as cheerio from 'cheerio'
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
-export async function scrapeAndStoreDetailProduct(url: string) {
-    try {
-        // connectToDB()
-
-        const scrapedProduct = await scrapeDetailAmazonProduct(url)
-
-        if (!scrapedProduct) return
-
-        // TODO: scrapeAmazonProduct list
-    } catch (error: any) {
-        throw new Error(`Failed to create/update product: ${error.message}`)
-    }
-}
-
-export async function scrapeDetailAmazonProduct(
-    url: string
-): Promise<AmazonProductType> {
+const getBrightDataOptions = (): AxiosRequestConfig => {
     const username = String(checkEnvVariable(process.env.BRIGHT_DATA_USERNAME))
 
     const password = String(checkEnvVariable(process.env.BRIGHT_DATA_PASSWORD))
@@ -43,7 +27,14 @@ export async function scrapeDetailAmazonProduct(
         rejectUnauthorized: false,
     }
 
+    return options
+}
+
+export async function scrapeDetailAmazonProduct(
+    url: string
+): Promise<AmazonProductType> {
     try {
+        const options = getBrightDataOptions()
         const { data } = await axios.get(url, options)
         const $ = cheerio.load(data)
 
@@ -107,19 +98,31 @@ export async function scrapeDetailAmazonProduct(
             star: Number(star) || undefined,
         }
 
-        console.log(amazonProduct)
-
         return amazonProduct
     } catch (error: any) {
         throw new Error(`Failed to scrape product: ${error.message}`)
     }
 }
 
-// export async function getAllProducts() {
-//     try {
+export const scrapeTodayDealsAmazonProducts = async () => {
+    try {
+        const todayDealsUrl = checkEnvVariable(
+            process.env.AMAZON_TODAY_DEALS_URL
+        )
+        const options = getBrightDataOptions()
 
-//     } catch (error: any) {
-//         console.error(error)
-//         throw new Error(`Failed to fetch products: ${error.message}`)
-//     }
-// }
+        const { data } = await axios.get(todayDealsUrl, options)
+
+        const $ = cheerio.load(data)
+
+        const todayDetailsProducts: Array<Record<string, any>> = []
+
+        $('div[data-testid="virtuoso-item-list" > div]').each((i, el) => {
+            $(el)
+                .find('div[data-testid][data-test-index]')
+                .each((j, item) => {})
+        })
+    } catch (error: any) {
+        throw new Error(`Failed to scrape today deals: ${error.message}`)
+    }
+}
