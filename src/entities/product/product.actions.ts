@@ -1,51 +1,16 @@
 'use server'
 
-import type { SearchedProductType } from './product.types'
+import type { DetailProductType, SearchedProductType } from './product.types'
 import { checkEnvVariable } from '@/shared/utils'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 import {
     scrapeDetailAmazonProduct,
+    scrapeSearchedAmazonProductList,
     scrapeTodaysDealsProductList,
 } from './product.scrape'
 import * as cheerio from 'cheerio'
 import { getPageContent } from '@/shared/utils/puppeteer'
-
-const getBrightDataOptions = (): AxiosRequestConfig & Record<string, any> => {
-    const username = String(checkEnvVariable(process.env.BRIGHT_DATA_USERNAME))
-    const password = String(checkEnvVariable(process.env.BRIGHT_DATA_PASSWORD))
-    const port = Number(checkEnvVariable(process.env.BRIGHT_DATA_PORT))
-    const session_id = (1000000 * Math.random()) | 0
-
-    return {
-        headers: {
-            'User-Agent':
-                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
-        },
-        auth: {
-            username: `${username}-session-${session_id}`,
-            password,
-        },
-        host: 'brd.superproxy.io',
-        port,
-        rejectUnauthorized: false,
-    }
-}
-
-export async function requestGetDetailAmazonProduct(
-    url: string
-): Promise<SearchedProductType> {
-    try {
-        const options = getBrightDataOptions()
-        const { data } = await axios.get(url, options)
-
-        const $ = cheerio.load(data)
-        const amazonProduct = scrapeDetailAmazonProduct($)
-
-        return amazonProduct
-    } catch (error: any) {
-        throw new Error(`Failed to scrape product: ${error.message}`)
-    }
-}
+import { getBrightDataOptions } from '@/shared/lib'
 
 export const requestGetTodayDealsAmazonProductList = async () => {
     try {
@@ -61,5 +26,39 @@ export const requestGetTodayDealsAmazonProductList = async () => {
         return todayDetailProducts
     } catch (error: any) {
         throw new Error(`Failed to scrape today deals: ${error.message}`)
+    }
+}
+
+export const requestSearchedProductList = async (
+    url: string
+): Promise<SearchedProductType[]> => {
+    try {
+        const options = getBrightDataOptions()
+        const { data } = await axios.get(url, options)
+
+        const $ = cheerio.load(data)
+        const searchedProducts = scrapeSearchedAmazonProductList($) || []
+
+        return searchedProducts
+    } catch (error: any) {
+        throw new Error(
+            `Failed to scrape searched product list: ${error.message}`
+        )
+    }
+}
+
+export async function requestGetDetailAmazonProduct(
+    url: string
+): Promise<DetailProductType> {
+    try {
+        const options = getBrightDataOptions()
+        const { data } = await axios.get(url, options)
+
+        const $ = cheerio.load(data)
+        const amazonProduct = scrapeDetailAmazonProduct($)
+
+        return amazonProduct
+    } catch (error: any) {
+        throw new Error(`Failed to scrape product: ${error.message}`)
     }
 }

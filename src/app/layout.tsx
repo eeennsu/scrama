@@ -5,10 +5,6 @@ import '@/shared/css/globals.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
 
 const inter = Inter({ subsets: ['latin'] })
-// const spaceGrotesk = Space_Grotesk({
-//     subsets: ['latin'],
-//     weight: ['300', '400', '500', '600', '700'],
-// })
 
 export const metadata: Metadata = {
     title: 'Amazon Scraping',
@@ -24,7 +20,7 @@ export default function RootLayout({
         <html lang='en'>
             <body className={inter.className}>
                 <div className='flex w-full min-h-dvh'>
-                    <div className='max-w-11xl w-full mx-auto flex flex-col flex-1'>
+                    <div className='container w-full mx-auto flex flex-col flex-1'>
                         <Header />
                         {children}
                     </div>

@@ -11,9 +11,9 @@ export const TodaysDeals: FC = async () => {
 
             <div className='flex flex-wrap gap-x-8 gap-y-12'>
                 {todaysDealsProduct?.length > 0 &&
-                    todaysDealsProduct?.map((product) => (
+                    todaysDealsProduct?.map((product, i) => (
                         <TodaysDealsProductCard
-                            key={product.id}
+                            key={product?.id || i}
                             product={product}
                         />
                     ))}

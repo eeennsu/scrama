@@ -10,10 +10,10 @@ interface Props {
 }
 
 export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
-    const Comp = product?.link ? Link : Fragment
+    const Comp = product?.url ? Link : Fragment
 
     return (
-        <Comp href={product.link || ''}>
+        <Comp href={product?.url || ''}>
             <Card className='w-[310px] group shadow-md'>
                 <CardContent className='flex flex-col w-full pt-6 gap-2'>
                     <figure className='relative w-[260px] h-[200px] overflow-hidden'>

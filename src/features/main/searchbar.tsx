@@ -3,16 +3,12 @@
 import { SearchedProductType } from '@/entities/product/product.types'
 import { Button } from '@/shared/ui/components/button'
 import { FormEvent, useState, type FC } from 'react'
-import { ProductCard } from './searched-product-card'
 import { useRouter } from 'next/navigation'
 
 export const Searchbar: FC = () => {
     const router = useRouter()
 
     const [searchText, setSearchText] = useState<string>('')
-    const [searchedProducts, setSearchedProducts] = useState<
-        SearchedProductType[]
-    >([])
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -26,9 +22,9 @@ export const Searchbar: FC = () => {
     }
 
     return (
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col gap-6 mt-6'>
             <form
-                className='flex flex-wrap gap-4 mt-12 items-center'
+                className='flex flex-wrap gap-4 items-center'
                 onSubmit={handleSubmit}
                 onReset={() => setSearchText('')}
             >
@@ -37,25 +33,16 @@ export const Searchbar: FC = () => {
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     placeholder='input a product name'
-                    className='searchbar-input'
+                    className='flex-1 min-w-[200px] w-full px-4 py-3 border placeholder:font-normal border-gray-300 rounded-lg shadow-xs text-lg focus:outline-none  placeholder:text-slate-300 font-medium text-slate-800 focus:shadow-md'
                 />
                 <Button
                     type='submit'
+                    className='text-lg px-4 py-3 h-full'
                     disabled={searchText.length <= 2}
                 >
                     Search
                 </Button>
             </form>
-            <div className='flex flex-wrap gap-4'>
-                {Array.isArray(searchedProducts) &&
-                    searchedProducts.length > 0 &&
-                    searchedProducts?.map((product) => (
-                        <ProductCard
-                            key={product.title}
-                            product={product}
-                        />
-                    ))}
-            </div>
         </div>
     )
 }
