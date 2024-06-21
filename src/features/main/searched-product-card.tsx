@@ -14,30 +14,28 @@ interface Props {
     product: SearchedProductType
 }
 
-export const ProductCard: FC<Props> = ({ product }) => {
-    const image = Array.isArray(product?.images)
-        ? product.images[0]
-        : 'assets/images/amazon.png'
-
+export const SearchedProductCard: FC<Props> = ({ product }) => {
     return (
-        <Card className='w-[274px] h-[300px] flex flex-col items-center group'>
-            <CardHeader className='min-h-[122px] w-full flex flex-col'>
-                <CardTitle className='flex-1 line-clamp-2'>
-                    {product?.title || ''}
-                </CardTitle>
-                <CardDescription>
-                    {product?.price && formatPrice(+product.price)}
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <figure className='relative w-[180px] h-[150px] group-hover:scale-110 transition-all duration-300'>
+        <Card className='flex-1 flex gap-2 w-full h-full'>
+            <CardHeader className='flex items-center'>
+                <figure className='relative w-[100px] h-[100px]'>
                     <Image
-                        src={image}
-                        alt={`${product.title} image`}
+                        src={product?.image || 'assets/images/amazon.png'}
+                        alt={product?.title || 'searched product'}
                         fill
-                        className='object-cover overflow-hidden'
+                        className='object-cover rounded-md'
                     />
                 </figure>
+            </CardHeader>
+            <CardContent>
+                <CardTitle>{product?.title}</CardTitle>
+                <CardDescription>
+                    {product?.price && (
+                        <span className='text-sm font-semibold'>
+                            {formatPrice(+product?.price)}
+                        </span>
+                    )}
+                </CardDescription>
             </CardContent>
         </Card>
     )

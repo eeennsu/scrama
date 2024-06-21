@@ -17,7 +17,7 @@ export const Intro: FC = () => {
                             height={16}
                         />
                     </p>
-                    <h1 className='text-gray-800 mt-8 font-semibold tracking-[-1.2px] text-6xl leading-[72px]'>
+                    <h1 className='text-gray-800 mt-6 font-semibold tracking-[-1.2px] text-6xl leading-[72px]'>
                         Master Amazon Scraping by
                         <span className='font-bold italic'> Next.js</span>
                     </h1>
