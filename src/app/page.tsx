@@ -1,11 +1,11 @@
 import type { NextPage } from 'next'
-import { Intro, TodayDeals } from '@/widgets/main'
+import { Intro, TodaysDeals } from '@/widgets/main'
 
 const MainPage: NextPage = () => {
     return (
         <main className='flex flex-col flex-1'>
             <Intro />
-            <TodayDeals />
+            <TodaysDeals />
         </main>
     )
 }

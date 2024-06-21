@@ -1,2 +1,3 @@
 export * from './searchbar'
-export * from './product-card'
+export * from './searched-product-card'
+export * from './todays-deals-product-card'

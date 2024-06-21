@@ -1,4 +1,5 @@
 import { z } from 'zod'
-import { AmazonProductSchema } from './product.zod'
+import { SearchedProductSchema, TodaysDealsProduct } from './product.zod'
 
-export type AmazonProductType = z.infer<typeof AmazonProductSchema>
+export type SearchedProductType = z.infer<typeof SearchedProductSchema>
+export type TodaysDealsProductType = z.infer<typeof TodaysDealsProduct>

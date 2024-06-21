@@ -1,102 +1,45 @@
 'use server'
 
-import type { AmazonProductType } from './product.types'
-import {
-    checkEnvVariable,
-    extractDescriptions,
-    extractPrice,
-} from '@/shared/utils'
-import * as cheerio from 'cheerio'
+import type { SearchedProductType } from './product.types'
+import { checkEnvVariable } from '@/shared/utils'
 import axios, { AxiosRequestConfig } from 'axios'
+import {
+    scrapeDetailAmazonProduct,
+    scrapeTodaysDealsProductList,
+} from './product.scrape'
+import * as cheerio from 'cheerio'
+import { getPageContent } from '@/shared/utils/puppeteer'
 
-const getBrightDataOptions = (): AxiosRequestConfig => {
+const getBrightDataOptions = (): AxiosRequestConfig & Record<string, any> => {
     const username = String(checkEnvVariable(process.env.BRIGHT_DATA_USERNAME))
-
     const password = String(checkEnvVariable(process.env.BRIGHT_DATA_PASSWORD))
-
     const port = Number(checkEnvVariable(process.env.BRIGHT_DATA_PORT))
-    const sessionId =
-        Date.now().toString(36) + Math.random().toString(36).substr(2)
-    const options = {
+    const session_id = (1000000 * Math.random()) | 0
+
+    return {
+        headers: {
+            'User-Agent':
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+        },
         auth: {
-            username: `${username}-session-${sessionId}`,
+            username: `${username}-session-${session_id}`,
             password,
         },
         host: 'brd.superproxy.io',
         port,
         rejectUnauthorized: false,
     }
-
-    return options
 }
 
-export async function scrapeDetailAmazonProduct(
+export async function requestGetDetailAmazonProduct(
     url: string
-): Promise<AmazonProductType> {
+): Promise<SearchedProductType> {
     try {
         const options = getBrightDataOptions()
         const { data } = await axios.get(url, options)
+
         const $ = cheerio.load(data)
-
-        const id = $('[data-component-type="s-search-result"]')
-            .first()
-            .attr('data-asin')
-
-        const title = $('#productTitle').text().trim()
-
-        const discountedPrice = extractPrice(
-            $('span.a-price span.a-offscreen'),
-            $('.priceToPay span.a-price-whole'),
-            $('a.size.base .a-color-price'),
-            $('.a-button-selected .a-color-base'),
-            $('.a-price.a-text-price')
-        )
-
-        const originalPrice = extractPrice(
-            $('#priceblock_ourprice'),
-            $('.a-price.a-text-price span.a-offscreen'),
-            $('#listPrice'),
-            $('#priceblock_dealprice'),
-            $('.a-size-base.a-color-price')
-        )
-        const discountedPercent = +$('.savingPercentage')
-            .text()
-            .replace(/[-%]/g, '')
-
-        const currency = $('.a-price-symbol').text().trim().slice(0, 1)
-
-        const availabilty = $('#availability').text().trim().toLocaleLowerCase()
-
-        const imageElements =
-            $('#imglbkFront').attr('data-a-dynamic-image') ||
-            $('#landingImage').attr('data-a-dynamic-image')
-
-        const images = Object.keys(JSON.parse(imageElements || '{}'))
-
-        const descriptions = extractDescriptions($('#feature-bullets'))
-
-        const star = $('#acrPopover')
-            .attr('title')
-            ?.match(/[\d.]+/)
-            ?.at(0)
-
-        const brand = $('#bylineInfo').text().trim().split(' ')?.at(2)
-
-        const amazonProduct: AmazonProductType = {
-            id,
-            title,
-            price: {
-                discountedPrice,
-                discountedPercent: discountedPercent || undefined,
-                originalPrice,
-                currency: currency || '$',
-            },
-            images,
-            descriptions,
-            isAvaliable: availabilty === 'in stock',
-            brand,
-            star: Number(star) || undefined,
-        }
+        const amazonProduct = scrapeDetailAmazonProduct($)
 
         return amazonProduct
     } catch (error: any) {
@@ -104,24 +47,18 @@ export async function scrapeDetailAmazonProduct(
     }
 }
 
-export const scrapeTodayDealsAmazonProducts = async () => {
+export const requestGetTodayDealsAmazonProductList = async () => {
     try {
         const todayDealsUrl = checkEnvVariable(
             process.env.AMAZON_TODAY_DEALS_URL
         )
-        const options = getBrightDataOptions()
 
-        const { data } = await axios.get(todayDealsUrl, options)
+        const content = await getPageContent(todayDealsUrl)
+        const $ = cheerio.load(content)
 
-        const $ = cheerio.load(data)
+        const todayDetailProducts = scrapeTodaysDealsProductList($) || []
 
-        const todayDetailsProducts: Array<Record<string, any>> = []
-
-        $('div[data-testid="virtuoso-item-list" > div]').each((i, el) => {
-            $(el)
-                .find('div[data-testid][data-test-index]')
-                .each((j, item) => {})
-        })
+        return todayDetailProducts
     } catch (error: any) {
         throw new Error(`Failed to scrape today deals: ${error.message}`)
     }

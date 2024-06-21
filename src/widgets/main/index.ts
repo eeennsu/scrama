@@ -1,2 +1,2 @@
 export * from './intro'
-export * from './today-deals'
+export * from './todays-deals'

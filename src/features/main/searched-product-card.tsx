@@ -6,12 +6,12 @@ import {
     CardHeader,
     CardTitle,
 } from '@/shared/ui/components/card'
-import type { AmazonProductType } from '@/entities/product/product.types'
+import type { SearchedProductType } from '@/entities/product/product.types'
 import { formatPrice } from '@/shared/utils'
 import Image from 'next/image'
 
 interface Props {
-    product: AmazonProductType
+    product: SearchedProductType
 }
 
 export const ProductCard: FC<Props> = ({ product }) => {
@@ -23,7 +23,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
         <Card className='w-[274px] h-[300px] flex flex-col items-center group'>
             <CardHeader className='min-h-[122px] w-full flex flex-col'>
                 <CardTitle className='flex-1 line-clamp-2'>
-                    {product.title}
+                    {product?.title || ''}
                 </CardTitle>
                 <CardDescription>
                     {product?.price && formatPrice(+product.price)}

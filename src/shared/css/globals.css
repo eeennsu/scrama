@@ -92,7 +92,7 @@
     }
 
     .section-text {
-        @apply text-secondary text-[32px] font-semibold;
+        @apply text-gray-900 text-[32px] font-semibold;
     }
 
     .small-text {
@@ -124,7 +124,7 @@
     }
 
     .trending-section {
-        @apply flex flex-col gap-10 px-6 md:px-20 py-24;
+        @apply flex flex-col gap-7 px-6 md:px-20 pt-20 pb-8 mx-auto;
     }
 
     /* PRODUCT DETAILS PAGE STYLES */
@@ -183,7 +183,7 @@
     }
 
     .nav-logo {
-        @apply font-spaceGrotesk text-[21px] text-secondary font-bold;
+        @apply font-spaceGrotesk text-[21px] text-secondary font-bold text-gray-700;
     }
 
     /* PRICE INFO */

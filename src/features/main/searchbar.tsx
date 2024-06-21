@@ -1,40 +1,28 @@
 'use client'
 
-import { scrapeDetailAmazonProduct } from '@/entities/product'
-import { AmazonProductType } from '@/entities/product/product.types'
+import { SearchedProductType } from '@/entities/product/product.types'
 import { Button } from '@/shared/ui/components/button'
-import { converAmazonLink } from '@/shared/utils'
 import { FormEvent, useState, type FC } from 'react'
-import { ProductCard } from './product-card'
+import { ProductCard } from './searched-product-card'
+import { useRouter } from 'next/navigation'
 
 export const Searchbar: FC = () => {
+    const router = useRouter()
+
     const [searchText, setSearchText] = useState<string>('')
-    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [searchedProducts, setSearchedProducts] = useState<
-        AmazonProductType[]
+        SearchedProductType[]
     >([])
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
         if (searchText.length <= 1) {
-            alert('Please enter a valid amazon product link')
+            alert('Please enter two or more characters to search')
             return
         }
 
-        const searchLink = converAmazonLink(searchText)
-
-        try {
-            setIsLoading(true)
-
-            const searchedProducts = await scrapeDetailAmazonProduct(searchLink)
-
-            // TODO: Implement the search functionality
-        } catch (error: any) {
-            throw new Error(error)
-        } finally {
-            setIsLoading(false)
-        }
+        router.push(`/search?q=${searchText}`)
     }
 
     return (
@@ -48,21 +36,14 @@ export const Searchbar: FC = () => {
                     type='text'
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
-                    placeholder='Enter amazon product link'
+                    placeholder='input a product name'
                     className='searchbar-input'
                 />
                 <Button
-                    type='reset'
-                    variant='outline'
-                    disabled={isLoading}
-                >
-                    reset
-                </Button>
-                <Button
                     type='submit'
-                    disabled={searchText.length <= 2 || isLoading}
+                    disabled={searchText.length <= 2}
                 >
-                    {isLoading ? 'Loading...' : 'Search'}
+                    Search
                 </Button>
             </form>
             <div className='flex flex-wrap gap-4'>
