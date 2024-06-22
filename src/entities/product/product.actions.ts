@@ -4,6 +4,7 @@ import type { DetailProductType, SearchedProductType } from './product.types'
 import { checkEnvVariable } from '@/shared/utils'
 import axios from 'axios'
 import {
+    scrapeAmazonProductsImages,
     scrapeDetailAmazonProduct,
     scrapeSearchedAmazonProductList,
     scrapeTodaysDealsProductList,
@@ -11,6 +12,23 @@ import {
 import * as cheerio from 'cheerio'
 import { getPageContent } from '@/shared/utils/puppeteer'
 import { getBrightDataOptions } from '@/shared/lib'
+
+export async function requestGetAmazonProductsImages() {
+    try {
+        const options = getBrightDataOptions()
+        const { data } = await axios.get(
+            'https://www.amazon.com/ref=nav_logo',
+            options
+        )
+
+        const $ = cheerio.load(data)
+        const amazonProductsImages = scrapeAmazonProductsImages($) || []
+
+        return amazonProductsImages
+    } catch (error: any) {
+        throw new Error(`Failed to scrape product images: ${error.message}`)
+    }
+}
 
 export const requestGetTodayDealsAmazonProductList = async () => {
     try {

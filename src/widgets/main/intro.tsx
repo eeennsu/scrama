@@ -1,11 +1,13 @@
 import type { FC } from 'react'
-import { Searchbar } from '@/features/main'
-import { HeroCarousel } from '@/features/main/hero-carousel'
+import { HeroCarousel, Searchbar } from '@/features/main'
+import { requestGetAmazonProductsImages } from '@/entities/product'
 import Image from 'next/image'
 
-export const Intro: FC = () => {
+export const Intro: FC = async () => {
+    const amazonProductsImages = await requestGetAmazonProductsImages()
+
     return (
-        <section className='px-6 md:px-20 py-24'>
+        <section className='px-6 md:px-20 py-14 lg:py-20'>
             <div className='flex max-xl:flex-col gap-16'>
                 <div className='flex flex-col justify-center'>
                     <p className='flex gap-2 text-sm font-medium text-gray-900'>
@@ -15,9 +17,10 @@ export const Intro: FC = () => {
                             alt='arrow-right'
                             width={16}
                             height={16}
+                            quality={100}
                         />
                     </p>
-                    <h1 className='text-gray-800 mt-6 font-semibold tracking-[-1.2px] text-6xl leading-[72px]'>
+                    <h1 className='text-gray-800 mt-4 font-semibold tracking-[-1.2px] text-6xl leading-[72px]'>
                         Master Amazon Scraping by
                         <span className='font-bold italic'> Next.js</span>
                     </h1>
@@ -27,7 +30,9 @@ export const Intro: FC = () => {
                     </p>
                     <Searchbar />
                 </div>
-                <HeroCarousel />
+                {amazonProductsImages.length > 0 && (
+                    <HeroCarousel productImages={amazonProductsImages} />
+                )}
             </div>
         </section>
     )

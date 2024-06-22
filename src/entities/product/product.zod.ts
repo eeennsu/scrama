@@ -8,16 +8,21 @@ export const SearchedProductPriceSchema = z.object({
     history: z.array(z.object({ price: z.number() })).nullish(),
 })
 
+export const CarouselProductImageSchema = z.object({
+    image: z.string().url().optional(),
+    url: z.string().url().optional(),
+})
+
 export const CommonProductSchema = z.object({
     id: z.string().optional(),
     title: z.string().optional(),
     url: z.string().url().optional(),
     image: z.string().url().optional(),
-    star: z.string().optional(),
+    rating: z.string().optional(),
 })
 
 export const TodaysDealsProductSchema = CommonProductSchema.omit({
-    star: true,
+    rating: true,
 }).extend({
     image: z.string().url().optional(),
     discountedPercent: z.string().optional(),
@@ -27,9 +32,10 @@ export const TodaysDealsProductSchema = CommonProductSchema.omit({
 })
 
 export const SearchedProductSchema = CommonProductSchema.extend({
-    price: z.string().optional(),
+    membership: z.string().nullish(),
+    price: z.string().nullish(),
     stock: z.string().nullish(),
-    lastMonthPurchases: z.number().optional(),
+    lastMonthPurchases: z.number().nullish(),
 })
 
 export const DetailProductSchema = CommonProductSchema.extend({
