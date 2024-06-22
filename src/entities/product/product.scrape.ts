@@ -2,6 +2,7 @@ import type {
     TodaysDealsProductType,
     DetailProductType,
     SearchedProductType,
+    CarouselProductImageType,
 } from './product.types'
 import type { CheerioAPI } from 'cheerio'
 import {
@@ -10,6 +11,41 @@ import {
     extractPrice,
     extractSearchedProductPrice,
 } from '@/shared/utils'
+
+export const scrapeAmazonProductsImages = (
+    $: CheerioAPI
+): CarouselProductImageType[] => {
+    const amazonProductsImages: CarouselProductImageType[] = []
+
+    $('img._fluid-quad-image-label-v2_style_fluidLandscapeImage__2euAK').each(
+        (_, el) => {
+            const element = $(el)
+
+            let image = element.attr('data-a-hires') || element.attr('src')
+            const url = element.closest('a').attr('href')
+
+            if (amazonProductsImages.length >= 5) {
+                return false
+            }
+
+            if (image) {
+                image = image.replace(
+                    /_SX\d+_|_UX\d+_|_SY\d+_|_UY\d+_/,
+                    '_SX1500_'
+                )
+            }
+
+            if (image) {
+                amazonProductsImages.push({
+                    image,
+                    url: `https://www.amazon.com${url}`,
+                })
+            }
+        }
+    )
+
+    return amazonProductsImages
+}
 
 export const scrapeTodaysDealsProductList = (
     $: CheerioAPI
@@ -39,9 +75,12 @@ export const scrapeTodaysDealsProductList = (
                 .text()
                 .trim()
 
-            const image = element
-                .find('img.ProductCardImage-module__image_SU6C7KYJpko3vQ2fK7Kf')
-                .attr('src')
+            const imageElement = element.find(
+                'img.ProductCardImage-module__image_SU6C7KYJpko3vQ2fK7Kf'
+            )
+
+            const image =
+                imageElement.attr('data-a-hires') || imageElement.attr('src')
 
             const todaysDealsProduct: TodaysDealsProductType = {
                 id,

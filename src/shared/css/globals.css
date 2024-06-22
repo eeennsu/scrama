@@ -6,6 +6,7 @@
     box-sizing: border-box;
     scroll-behavior: smooth;
 }
+
 @layer base {
     body {
         @apply font-inter;
@@ -91,10 +92,6 @@
         @apply mt-4 text-6xl leading-[72px] font-bold tracking-[-1.2px] text-gray-900;
     }
 
-    .section-text {
-        @apply text-gray-900 text-[32px] font-semibold;
-    }
-
     .small-text {
         @apply flex gap-2 text-sm font-medium text-primary;
     }
@@ -121,10 +118,6 @@
 
     .carousel .control-dots .dot.selected {
         @apply bg-[#475467] !important;
-    }
-
-    .trending-section {
-        @apply flex flex-col gap-7 px-6 md:px-20 pt-20 pb-8 mx-auto;
     }
 
     /* PRODUCT DETAILS PAGE STYLES */
@@ -177,15 +170,6 @@
         @apply px-5 py-3 text-white text-base font-semibold border border-secondary bg-secondary rounded-lg mt-8;
     }
 
-    /* NAVBAR */
-    .nav {
-        @apply flex justify-between items-center px-6 md:px-20 py-4;
-    }
-
-    .nav-logo {
-        @apply font-spaceGrotesk text-[21px] text-secondary font-bold text-gray-700;
-    }
-
     /* PRICE INFO */
     .price-info_card {
         @apply flex-1 min-w-[200px] flex flex-col gap-2 border-l-[3px] rounded-10 bg-white-100 px-5 py-4;
@@ -211,4 +195,9 @@
     .searchbar-btn {
         @apply bg-gray-900 border border-gray-900 rounded-lg shadow-xs px-5 py-3 text-white text-base font-semibold hover:opacity-90 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-40;
     }
+}
+
+.image-gallery-slide-wrapper {
+    display: flex;
+    justify-content: center;
 }

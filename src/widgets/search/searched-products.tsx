@@ -1,7 +1,6 @@
 import type { FC } from 'react'
 import { SearchX } from 'lucide-react'
 import { SearchedProductType } from '@/entities/product'
-import Image from 'next/image'
 import { SearchedProductCard } from '@/features/main'
 
 interface Props {
@@ -9,7 +8,6 @@ interface Props {
 }
 
 export const SearchedProducts: FC<Props> = ({ products }) => {
-    console.log(products.length)
     return (
         <>
             {products.length <= 0 ? (

@@ -1,5 +1,5 @@
+import type { FC } from 'react'
 import type { SearchedProductType } from '@/entities/product/product.types'
-import { Fragment, type FC } from 'react'
 import {
     Card,
     CardContent,
@@ -17,17 +17,13 @@ interface Props {
 }
 
 export const SearchedProductCard: FC<Props> = ({ product }) => {
-    const Comp = product?.url ? Link : Fragment
     const isNotLongLeft = !!product?.stock
 
-    return (
-        <Comp
-            href={product?.url || ''}
-            className='flex-1'
-        >
+    const ProductCard = () => {
+        return (
             <Card
                 className={cn(
-                    'flex w-full h-full items-center group',
+                'flex w-full h-full items-center group',
                     isNotLongLeft && 'bg-red-200'
                 )}
             >
@@ -38,6 +34,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                             alt={product?.title || 'searched product'}
                             fill
                             className='object-cover rounded-md'
+                            quality={100}
                         />
                         {isNotLongLeft && (
                             <figcaption className='-bottom-7 left-0 right-0 justify-center absolute text-xs flex gap-2 font-medium items-center text-gray-600'>
@@ -108,6 +105,19 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                     </div>
                 </CardContent>
             </Card>
-        </Comp>
+        )
+    }
+
+    return product?.url ? (
+        <Link
+            className='flex-1'
+            href={product?.url || ''}
+        >
+            <ProductCard />
+        </Link>
+    ) : (
+        <div className='flex-1'>
+            <ProductCard />
+        </div>
     )
 }

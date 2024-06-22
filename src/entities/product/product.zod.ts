@@ -8,6 +8,11 @@ export const SearchedProductPriceSchema = z.object({
     history: z.array(z.object({ price: z.number() })).nullish(),
 })
 
+export const CarouselProductImageSchema = z.object({
+    image: z.string().url().optional(),
+    url: z.string().url().optional(),
+})
+
 export const CommonProductSchema = z.object({
     id: z.string().optional(),
     title: z.string().optional(),

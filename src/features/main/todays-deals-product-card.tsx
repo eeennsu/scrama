@@ -1,19 +1,17 @@
 import { Fragment, type FC } from 'react'
 import { TodaysDealsProductType } from '@/entities/product'
-import { Card, CardContent, CardFooter, CardHeader } from '@/shared/ui/card'
+import { Card, CardContent, CardFooter } from '@/shared/ui/card'
+import { Badge } from '@/shared/ui/badge'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Badge } from '@/shared/ui/badge'
 
 interface Props {
     product: TodaysDealsProductType
 }
 
 export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
-    const Comp = product?.url ? Link : Fragment
-
-    return (
-        <Comp href={product?.url || ''}>
+    const ProductCard = () => {
+        return (
             <Card className='w-[310px] group shadow-md'>
                 <CardContent className='flex flex-col w-full pt-6 gap-2'>
                     <figure className='relative w-[260px] h-[200px] overflow-hidden'>
@@ -41,6 +39,14 @@ export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
                     </h3>
                 </CardFooter>
             </Card>
-        </Comp>
+        )
+    }
+
+    return product?.url ? (
+        <Link href={product?.url || ''}>
+            <ProductCard />
+        </Link>
+    ) : (
+        <ProductCard />
     )
 }
