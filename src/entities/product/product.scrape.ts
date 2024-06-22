@@ -63,6 +63,15 @@ export const scrapeTodaysDealsProductList = (
                 .text()
                 .trim()
 
+            const imageElement = element.find(
+                'img.ProductCardImage-module__image_SU6C7KYJpko3vQ2fK7Kf'
+            )
+
+            const image =
+                imageElement.attr('data-a-hires') || imageElement.attr('src')
+
+            const url = element.find('a').attr('href')
+
             const discountedPercent = element
                 .find(
                     'div[data-component="dui-badge"] div.style_badgeLabel__dD0Hv'
@@ -75,19 +84,13 @@ export const scrapeTodaysDealsProductList = (
                 .text()
                 .trim()
 
-            const imageElement = element.find(
-                'img.ProductCardImage-module__image_SU6C7KYJpko3vQ2fK7Kf'
-            )
-
-            const image =
-                imageElement.attr('data-a-hires') || imageElement.attr('src')
-
             const todaysDealsProduct: TodaysDealsProductType = {
                 id,
                 title,
                 discountedPercent,
                 avaliableCoupon,
                 image,
+                url,
             }
 
             todaysDealsProductList.push(todaysDealsProduct)
@@ -140,7 +143,7 @@ export const scrapeSearchedAmazonProductList = (
                 .split(' ')
                 ?.at(1) || null
 
-        const lastMonthPurchases = extractLastMonthPurchases(element) || null
+        const lastMonthPurchases = extractLastMonthPurchases(element)
 
         const searchedProduct: SearchedProductType = {
             id,

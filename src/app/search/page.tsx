@@ -22,12 +22,12 @@ const SearchPage: FC<Props> = async ({ searchParams }) => {
         await requestSearchedProductList(amazonSearchedLink)
 
     return (
-        <main className='flex flex-col flex-1 px-6 md:px-20 py-12 gap-7'>
+        <>
             <SearchedKeyword keyword={keyword} />
             {!!searchedProducts && (
                 <SearchedProducts products={searchedProducts} />
             )}
-        </main>
+        </>
     )
 }
 

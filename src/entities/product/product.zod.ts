@@ -27,8 +27,6 @@ export const TodaysDealsProductSchema = CommonProductSchema.omit({
     image: z.string().url().optional(),
     discountedPercent: z.string().optional(),
     avaliableCoupon: z.string().nullish(),
-    comment: z.string().optional(),
-    purchasesLastMonth: z.number().optional(),
 })
 
 export const SearchedProductSchema = CommonProductSchema.extend({

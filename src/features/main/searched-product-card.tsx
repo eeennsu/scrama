@@ -6,7 +6,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/shared/ui/components/card'
-import { Badge } from '@/shared/ui/badge'
+import { Badge } from '@/shared/ui/components/badge'
 import { FileQuestion, HeartOff, Star, StarOff } from 'lucide-react'
 import { cn } from '@/shared/lib'
 import Image from 'next/image'
@@ -23,8 +23,8 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
         return (
             <Card
                 className={cn(
-                'flex w-full h-full items-center group',
-                    isNotLongLeft && 'bg-red-200'
+                    'flex w-full h-full items-center group',
+                    isNotLongLeft && 'border-2 border-orange-400'
                 )}
             >
                 <CardHeader className='pr-2'>
@@ -93,8 +93,11 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                                 <p className='text-sm flex gap-2 font-medium items-center text-gray-500'>
                                     Last month purchases:
                                     {product?.lastMonthPurchases ? (
-                                        <span className='text-gray-900 font-bold'>
-                                            {product?.lastMonthPurchases}K
+                                        <span className='text-gray-900 inline-flex gap-0.5 font-bold'>
+                                            {product?.lastMonthPurchases}
+                                            <span className='text-gray-600 font-normal'>
+                                                K
+                                            </span>
                                         </span>
                                     ) : (
                                         <HeartOff size={16} />

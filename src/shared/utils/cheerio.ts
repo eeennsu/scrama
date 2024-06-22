@@ -80,27 +80,20 @@ export const extractDescriptions = (element: Cheerio<Element>): string[] => {
 
 export const extractLastMonthPurchases = (
     element: Cheerio<Element>
-): number => {
+): number | null => {
     const purchasesText = element
         .find('.a-size-base.a-color-secondary:contains("bought in past month")')
         .text()
         .trim()
 
-    const purchasesMatch = purchasesText.match(/(\d+(\.\d+)?[KMB]?)/)
+    const boughtInPastMonthNumber = parseInt(
+        purchasesText.replace(/[^0-9]/g, ''),
+        10
+    )
 
-    let lastMonthPurchases = 0
-    if (purchasesMatch) {
-        const purchasesValue = purchasesMatch[0]
-        if (purchasesValue.includes('K')) {
-            lastMonthPurchases = parseFloat(purchasesValue) * 1000
-        } else if (purchasesValue.includes('M')) {
-            lastMonthPurchases = parseFloat(purchasesValue) * 1000000
-        } else if (purchasesValue.includes('B')) {
-            lastMonthPurchases = parseFloat(purchasesValue) * 1000000000
-        } else {
-            lastMonthPurchases = parseFloat(purchasesValue)
-        }
+    if (isNaN(boughtInPastMonthNumber)) {
+        return null
     }
 
-    return lastMonthPurchases
+    return boughtInPastMonthNumber
 }

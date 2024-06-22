@@ -1,7 +1,7 @@
-import { Fragment, type FC } from 'react'
+import type { FC } from 'react'
 import { TodaysDealsProductType } from '@/entities/product'
-import { Card, CardContent, CardFooter } from '@/shared/ui/card'
-import { Badge } from '@/shared/ui/badge'
+import { Card, CardContent, CardFooter } from '@/shared/ui/components/card'
+import { Badge } from '@/shared/ui/components/badge'
 import Image from 'next/image'
 import Link from 'next/link'
 
