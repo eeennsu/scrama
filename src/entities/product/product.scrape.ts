@@ -8,6 +8,7 @@ import {
     extractDescriptions,
     extractLastMonthPurchases,
     extractPrice,
+    extractSearchedProductPrice,
 } from '@/shared/utils'
 
 export const scrapeTodaysDealsProductList = (
@@ -76,20 +77,15 @@ export const scrapeSearchedAmazonProductList = (
         const image = element.find('img.s-image').attr('src')
         const url = element.find('a.a-link-normal').attr('href')
 
-        const price =
-            element
-                .find('div[data-cy="secondary-offer-recipe"] span.a-color-base')
-                .first()
-                .text()
-                .trim() ||
-            element
-                .find(
-                    'div[data-cy="price-recipe"] span.a-price span.a-offscreen'
-                )
-                .first()
-                .text()
-                .trim()
-        const star = element
+        const membership = element
+            .find('div[data-cy="secondary-offer-recipe"] span')
+            .first()
+            .text()
+            .trim()
+
+        const price = extractSearchedProductPrice(element) || null
+
+        const rating = element
             .find('span.a-icon-alt')
             .text()
             .trim()
@@ -103,17 +99,18 @@ export const scrapeSearchedAmazonProductList = (
                 .text()
                 .trim()
                 .split(' ')
-                ?.at(1) || ''
+                ?.at(1) || null
 
-        const lastMonthPurchases = extractLastMonthPurchases(element)
+        const lastMonthPurchases = extractLastMonthPurchases(element) || null
 
         const searchedProduct: SearchedProductType = {
             id,
             title,
             image,
             url,
+            membership: membership.includes('Prime') ? membership : null,
             price,
-            star,
+            rating,
             stock,
             lastMonthPurchases,
         }
@@ -164,7 +161,7 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
 
     const descriptions = extractDescriptions($('#feature-bullets'))
 
-    const star = $('#acrPopover')
+    const rating = $('#acrPopover')
         .attr('title')
         ?.match(/[\d.]+/)
         ?.at(0)
@@ -184,7 +181,7 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
         descriptions,
         isAvaliable: availabilty === 'in stock',
         brand,
-        star,
+        rating,
     }
 
     return amazonProduct

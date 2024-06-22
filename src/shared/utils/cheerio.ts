@@ -23,11 +23,29 @@ export const generateTitle = (
     return title
 }
 
+export const extractSearchedProductPrice = (
+    element: Cheerio<Element>
+): string => {
+    return (
+        element.find('span.a-price span.a-offscreen').first().text().trim() ||
+        element
+            .find('div[data-cy="secondary-offer-recipe"] span.a-color-base')
+            .first()
+            .text()
+            .trim() ||
+        element
+            .find('div[data-cy="price-recipe"] .a-row.a-size-base.a-color-base')
+            .eq(1)
+            .text()
+            .trim()
+    )
+}
+
 export const extractPrice = (...elements: Cheerio<Element>[]): number => {
     let foundPrice = ''
 
     for (const element of elements) {
-        element.each((i, el) => {
+        element.each((_, el) => {
             if (foundPrice) return false
 
             const priceText = cheerio(el).text().trim()

@@ -18,7 +18,7 @@ export const SearchedProducts: FC<Props> = ({ products }) => {
                     <SearchX /> No products found.
                 </p>
             ) : (
-                <section className='grid grid-cols-1 xl:grid-cols-2 space-x-4 space-y-8'>
+                <section className='grid grid-cols-1 xl:grid-cols-2 gap-x-4 gap-y-6'>
                     {products?.map((product, i) => (
                         <SearchedProductCard
                             key={product?.id || i}
