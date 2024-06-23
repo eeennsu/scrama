@@ -18,8 +18,7 @@ export const Header: FC = () => {
                     />
 
                     <p className='font-spaceGrotesk text-[21px] font-bold text-gray-700'>
-                        Amazon{'  '}
-                        <span className='text-blue-700'>Scraping</span>
+                        Scrama
                     </p>
                 </Link>
             </nav>
