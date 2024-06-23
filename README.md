@@ -1,6 +1,7 @@
 # Scrama
 - Scrape + Amazon 
 - 아마존닷컴 사이트의 상품들을 스크래핑 (https://www.amazon.com/)
+- 작업기간 약 1주
 
 # Stacks
 - front - Next.js
