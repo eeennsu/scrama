@@ -19,7 +19,6 @@ module.exports = {
         es2020: true,
     },
     rules: {
-        'no-unused-vars': ['warn'],
         '@typescript-eslint/no-unused-vars': 'warn',
         '@typescript-eslint/no-explicit-any': 'off',
         'tailwindcss/no-custom-classname': 'off',

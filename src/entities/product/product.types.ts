@@ -4,6 +4,7 @@ import {
     DetailProductSchema,
     SearchedProductSchema,
     TodaysDealsProductSchema,
+    ProductCommentSchema,
 } from './product.zod'
 
 export type CarouselProductImageType = z.infer<
@@ -12,3 +13,4 @@ export type CarouselProductImageType = z.infer<
 export type DetailProductType = z.infer<typeof DetailProductSchema>
 export type TodaysDealsProductType = z.infer<typeof TodaysDealsProductSchema>
 export type SearchedProductType = z.infer<typeof SearchedProductSchema>
+export type ProductCommentType = z.infer<typeof ProductCommentSchema>
