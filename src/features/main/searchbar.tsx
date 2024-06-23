@@ -1,6 +1,5 @@
 'use client'
 
-import { SearchedProductType } from '@/entities/product/product.types'
 import { Button } from '@/shared/ui/components/button'
 import { FormEvent, useState, type FC } from 'react'
 import { useRouter } from 'next/navigation'

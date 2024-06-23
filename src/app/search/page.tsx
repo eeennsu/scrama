@@ -1,8 +1,7 @@
-import { requestSearchedProductList } from '@/entities/product'
+import type { FC } from 'react'
+import { requestGetSearchedProductList } from '@/entities/product'
 import { converAmazonLink } from '@/shared/utils'
 import { SearchedKeyword, SearchedProducts } from '@/widgets/search'
-
-import type { FC } from 'react'
 
 interface Props {
     searchParams: {
@@ -19,15 +18,15 @@ const SearchPage: FC<Props> = async ({ searchParams }) => {
 
     const amazonSearchedLink = converAmazonLink(keyword)
     const searchedProducts =
-        await requestSearchedProductList(amazonSearchedLink)
+        await requestGetSearchedProductList(amazonSearchedLink)
 
     return (
-        <main className='flex flex-col flex-1 px-6 md:px-20 py-12 gap-7'>
+        <>
             <SearchedKeyword keyword={keyword} />
             {!!searchedProducts && (
                 <SearchedProducts products={searchedProducts} />
             )}
-        </main>
+        </>
     )
 }
 

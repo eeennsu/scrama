@@ -1,4 +1,4 @@
-import cheerio, { Cheerio, Element } from 'cheerio'
+import cheerio, { Cheerio, CheerioAPI, Element } from 'cheerio'
 
 export const generateTitle = (
     product: Cheerio<Element>,
@@ -67,40 +67,38 @@ export const extractPrice = (...elements: Cheerio<Element>[]): number => {
     return Number(foundPrice)
 }
 
-export const extractDescriptions = (element: Cheerio<Element>): string[] => {
-    const descriptions = [] as string[]
+export const extractDescriptions = ($: CheerioAPI) => {
+    const descirptions: string[] = []
 
-    element.find('span.a-list-item').each((i, el) => {
-        const description = cheerio(el).text().trim()
-        descriptions.push(description)
-    })
+    $('#feature-bullets')
+        .find('span.a-list-item')
+        .each((_, el) => {
+            const description = $(el).text().trim()
 
-    return descriptions
+            if (description) {
+                descirptions.push(description)
+            }
+        })
+
+    return descirptions
 }
 
 export const extractLastMonthPurchases = (
     element: Cheerio<Element>
-): number => {
+): number | null => {
     const purchasesText = element
         .find('.a-size-base.a-color-secondary:contains("bought in past month")')
         .text()
         .trim()
 
-    const purchasesMatch = purchasesText.match(/(\d+(\.\d+)?[KMB]?)/)
+    const boughtInPastMonthNumber = parseInt(
+        purchasesText.replace(/[^0-9]/g, ''),
+        10
+    )
 
-    let lastMonthPurchases = 0
-    if (purchasesMatch) {
-        const purchasesValue = purchasesMatch[0]
-        if (purchasesValue.includes('K')) {
-            lastMonthPurchases = parseFloat(purchasesValue) * 1000
-        } else if (purchasesValue.includes('M')) {
-            lastMonthPurchases = parseFloat(purchasesValue) * 1000000
-        } else if (purchasesValue.includes('B')) {
-            lastMonthPurchases = parseFloat(purchasesValue) * 1000000000
-        } else {
-            lastMonthPurchases = parseFloat(purchasesValue)
-        }
+    if (isNaN(boughtInPastMonthNumber)) {
+        return null
     }
 
-    return lastMonthPurchases
+    return boughtInPastMonthNumber
 }

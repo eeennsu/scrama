@@ -1,4 +1,4 @@
-import type { Page, GoToOptions } from 'puppeteer'
+import type { GoToOptions } from 'puppeteer'
 import puppeteer from 'puppeteer'
 import { scrollPageToBottom } from 'puppeteer-autoscroll-down'
 
