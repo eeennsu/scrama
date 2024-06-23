@@ -34,22 +34,22 @@ module.exports = {
                 patterns: [
                     {
                         group: [
-                            '@shared/*/*/*/*/*/**',
-                            '@entities/*/*/*/*/*/**',
-                            '@features/*/*/*/*/*/**',
-                            '@widgets/*/*/*/*/*/**',
-                            '@app/*/*/*/*/*/**',
+                            '@/shared/**/*/*/*/*/**',
+                            '@/entities/**/*/*/*/*/**',
+                            '@/features/**/*/*/*/*/**',
+                            '@/widgets/**/*/*/*/*/**',
+                            '@/app/**/*/*/*/*/**',
                         ],
                         message:
                             'Direct access to the internal parts of the module is prohibited',
                     },
                     {
                         group: [
-                            '../**/shared',
-                            '../**/entities',
-                            '../**/features',
-                            '../**/widgets',
-                            '../**/app',
+                            '../shared/**',
+                            '../entities/**',
+                            '../features/**',
+                            '../widgets/**',
+                            '../app/**',
                         ],
                         message: 'Prefer absolute imports instead of relatives',
                     },

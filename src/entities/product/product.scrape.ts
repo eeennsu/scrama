@@ -116,6 +116,7 @@ export const scrapeSearchedAmazonProductList = (
             .find('div.s-title-instructions-style')
             .text()
             .trim()
+
         const image = element.find('img.s-image').attr('src')
         const url = element.find('a.a-link-normal').attr('href')
 
@@ -166,10 +167,6 @@ export const scrapeSearchedAmazonProductList = (
 }
 
 export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
-    const id = $('[data-component-type="s-search-result"]')
-        .first()
-        .attr('data-asin')
-
     const title = $('#productTitle').text().trim()
 
     const discountedPrice = extractPrice(
@@ -187,9 +184,6 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
         $('#priceblock_dealprice'),
         $('.a-size-base.a-color-price')
     )
-    const discountedPercent = +$('.savingPercentage')
-        .text()
-        .replace(/[-%]/g, '')
 
     const currency = $('.a-price-symbol').text().trim().slice(0, 1)
 
@@ -201,7 +195,7 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
 
     const image = Object.keys(JSON.parse(imageElements || '{}'))?.at(0)
 
-    const descriptions = extractDescriptions($('#feature-bullets'))
+    const descriptions = extractDescriptions($)
 
     const rating = $('#acrPopover')
         .attr('title')
@@ -209,13 +203,29 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
         ?.at(0)
 
     const brand = $('#bylineInfo').text().trim().split(' ')?.at(2)
+    const reviewsCount = Number(
+        $('#acrCustomerReviewText').text().trim().match(/\d+/)?.join('')
+    )
+
+    const lastMonthPurchases = +$(
+        '#social-proofing-faceout-title-tk_bought span'
+    )
+        .text()
+        .trim()
+        .replace(/[^0-9]/g, '')
+
+    const deliveryInfos = $('#amazonGlobal_feature_div > span')
+        .first()
+        .text()
+        .trim()
+        .split('&')
+    const importCost = deliveryInfos?.at(0)?.trim()
+    const deliveryCost = deliveryInfos?.at(1)?.trim().split(' ')?.at(0)
 
     const amazonProduct: DetailProductType = {
-        id,
         title,
         price: {
             discountedPrice,
-            discountedPercent,
             originalPrice,
             currency: currency || '$',
         },
@@ -224,6 +234,12 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
         isAvaliable: availabilty === 'in stock',
         brand,
         rating,
+        reviewsCount,
+        lastMonthPurchases,
+        delivery: {
+            deliveryCost,
+            importCost,
+        },
     }
 
     return amazonProduct

@@ -47,7 +47,7 @@ export const requestGetTodayDealsAmazonProductList = async () => {
     }
 }
 
-export const requestSearchedProductList = async (
+export const requestGetSearchedProductList = async (
     url: string
 ): Promise<SearchedProductType[]> => {
     try {
@@ -77,6 +77,6 @@ export async function requestGetDetailAmazonProduct(
 
         return amazonProduct
     } catch (error: any) {
-        throw new Error(`Failed to scrape product: ${error.message}`)
+        throw new Error(`Failed to scrape detail product: ${error.message}`)
     }
 }

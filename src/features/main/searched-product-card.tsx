@@ -114,7 +114,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
     return product?.url ? (
         <Link
             className='flex-1'
-            href={product?.url || ''}
+            href={`/product?url=${encodeURIComponent(product?.url)}`}
         >
             <ProductCard />
         </Link>
