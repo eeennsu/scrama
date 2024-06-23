@@ -83,7 +83,7 @@ export const ProductPrice: FC<Props> = ({
                             />
 
                             <p className='text-xs text-blue-800 font-semibold'>
-                                {reviewsCount} Reviews
+                                {reviewsCount.toLocaleString()} Reviews
                             </p>
                         </div>
                     </div>

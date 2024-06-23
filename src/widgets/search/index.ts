@@ -1,2 +1,2 @@
-export * from './searched-keyword'
+export * from './search-head'
 export * from './searched-products'

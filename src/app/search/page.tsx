@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { requestGetSearchedProductList } from '@/entities/product'
 import { converAmazonLink } from '@/shared/utils'
-import { SearchedKeyword, SearchedProducts } from '@/widgets/search'
+import { SearchHead, SearchedProducts } from '@/widgets/search'
 
 interface Props {
     searchParams: {
@@ -22,7 +22,7 @@ const SearchPage: FC<Props> = async ({ searchParams }) => {
 
     return (
         <>
-            <SearchedKeyword keyword={keyword} />
+            <SearchHead keyword={keyword} />
             {!!searchedProducts && (
                 <SearchedProducts products={searchedProducts} />
             )}

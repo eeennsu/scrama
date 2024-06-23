@@ -11,8 +11,7 @@ export const SearchedProducts: FC<Props> = ({ products }) => {
     return (
         <>
             {products.length <= 0 ? (
-                <p className='text-gray-800 text-lg text-center'>
-                    {' '}
+                <p className='text-gray-800 text-lg gap-2 mt-10 flex items-center justify-center'>
                     <SearchX /> No products found.
                 </p>
             ) : (

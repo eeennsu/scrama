@@ -16,7 +16,7 @@ interface Props {
 export const ProductData: FC<Props> = ({ product, url }) => {
     return (
         <article className='flex flex-col gap-8'>
-            <section className='flex gap-28 xl:flex-row flex-col'>
+            <section className='flex gap-28 xl:flex-row flex-col-reverse'>
                 <div className='flex-1 flex flex-col'>
                     <ProductTitle
                         title={product.title}
@@ -58,8 +58,6 @@ export const ProductData: FC<Props> = ({ product, url }) => {
                             />
                         </div>
                     </section>
-
-                    {/* <Modal productId={id} /> */}
                 </div>
 
                 <figure className='flex-grow xl:max-w-[50%] relative w-[580px] h-[400px] flex items-center max-w-full py-16 border border-white-200 rounded-lg'>
