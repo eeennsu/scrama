@@ -5,7 +5,7 @@ import Link from 'next/link'
 export const Header: FC = () => {
     return (
         <header className='w-full'>
-            <nav className='flex justify-between items-center px-6 md:px-20 py-4'>
+            <nav className='flex justify-between items-center px-6 md:px-20 py-4 border-b'>
                 <Link
                     href='/'
                     className='flex items-center gap-1'

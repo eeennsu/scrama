@@ -93,6 +93,10 @@ export const scrapeTodaysDealsProductList = (
             }
 
             todaysDealsProductList.push(todaysDealsProduct)
+
+            if (todaysDealsProductList.length >= 8) {
+                return false
+            }
         }
     )
 
@@ -164,7 +168,10 @@ export const scrapeSearchedAmazonProductList = (
 }
 
 export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
-    const title = $('#productTitle').text().trim()
+    const title =
+        $('#titleSection').text().trim() ||
+        $('#title').text().trim() ||
+        $('#productTitle').text().trim()
 
     const discountedPrice = extractPrice(
         $('span.a-price span.a-offscreen'),
@@ -186,9 +193,11 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
 
     const availabilty = $('#availability').text().trim().toLocaleLowerCase()
 
-    const imageElements =
-        $('#imglbkFront').attr('data-a-dynamic-image') ||
-        $('#landingImage').attr('data-a-dynamic-image')
+    const imageElements = $('#imgTagWrapperId > img')
+        .first()
+        .attr('data-a-dynamic-image')
+
+    // $('#landingImage').attr('data-a-dynamic-image')
 
     const image = Object.keys(JSON.parse(imageElements || '{}'))?.at(0)
 
@@ -201,11 +210,12 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
 
     const brand = $('#bylineInfo').text().trim().split(' ')?.at(2)
     const reviewsCount = $('#acrCustomerReviewText')
+        .first()
         .text()
         .trim()
-        .match(/\d+/)
-        ?.join('')
+        .replace(/[^0-9]/g, '')
 
+    console.log('reviewsCount', reviewsCount)
     const lastMonthPurchases = +$(
         '#social-proofing-faceout-title-tk_bought span'
     )

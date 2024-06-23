@@ -23,7 +23,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
         return (
             <Card
                 className={cn(
-                    'flex w-full h-full items-center group',
+                    'flex w-full h-full items-center group max-sm:flex-col',
                     isNotLongLeft && 'border-2 border-orange-400'
                 )}
             >

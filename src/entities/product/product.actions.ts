@@ -1,17 +1,20 @@
 'use server'
 
 import type { DetailProductType, SearchedProductType } from './product.types'
-import { checkEnvVariable } from '@/shared/utils'
-import axios from 'axios'
 import {
     scrapeAmazonProductsImages,
     scrapeDetailAmazonProduct,
     scrapeSearchedAmazonProductList,
     scrapeTodaysDealsProductList,
 } from './product.scrape'
-import * as cheerio from 'cheerio'
-import { getPageContent } from '@/shared/utils/puppeteer'
+import {
+    getPageContent,
+    getPageContentWithScroll,
+} from '@/shared/utils/puppeteer'
+import { checkEnvVariable } from '@/shared/utils'
 import { getBrightDataOptions } from '@/shared/lib'
+import * as cheerio from 'cheerio'
+import axios from 'axios'
 
 export async function requestGetAmazonProductsImages() {
     try {
@@ -36,10 +39,10 @@ export const requestGetTodayDealsAmazonProductList = async () => {
             process.env.AMAZON_TODAY_DEALS_URL
         )
 
-        const content = await getPageContent(todayDealsUrl)
+        const content = await getPageContentWithScroll(todayDealsUrl)
         const $ = cheerio.load(content)
 
-        const todayDetailProducts = scrapeTodaysDealsProductList($) || []
+        const todayDetailProducts = scrapeTodaysDealsProductList($)
 
         return todayDetailProducts
     } catch (error: any) {
