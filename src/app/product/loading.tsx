@@ -16,7 +16,7 @@ const ProductLoading: FC = () => {
                             <Skeleton className='w-10 h-10' />
                         </div>
                     </section>
-                    <section className='flex items-center flex-wrap gap-10 py-6 border-y border-y-yellow-200'>
+                    <section className='flex items-center flex-wrap gap-10 py-6'>
                         <section className='flex flex-col gap-2'>
                             <Skeleton className='w-24 h-10' />
                             <Skeleton className='w-16 h-6' />
