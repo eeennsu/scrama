@@ -35,63 +35,68 @@ export const ProductPrice: FC<Props> = ({
             </section>
 
             <section className='flex flex-col gap-4'>
-                <div className='flex gap-3'>
-                    <div className='flex items-center gap-2 px-4 py-2.5 bg-yellow-100 rounded-[27px]'>
-                        {
-                            <div className='flex items-center gap-1'>
-                                {Array.from({
-                                    length: fullStars,
-                                }).map((_, i) => (
-                                    <Star
-                                        key={i}
-                                        className='text-yellow-500'
-                                        size={18}
-                                    />
-                                ))}
-                                {Array.from({
-                                    length: halfStar,
-                                }).map((_, i) => (
-                                    <StarHalf
-                                        key={i}
-                                        className='text-yellow-500'
-                                        size={18}
-                                    />
-                                ))}
-                                {Array.from({
-                                    length: emptyStars,
-                                }).map((_, i) => (
-                                    <Star
-                                        key={i}
-                                        className='opacity-45'
-                                        size={18}
-                                    />
-                                ))}
-                            </div>
-                        }
-                        <p className='text-sm text-primary-orange font-semibold'>
-                            {rating}
-                        </p>
-                    </div>
+                {rating && reviewsCount ? (
+                    <div className='flex gap-3'>
+                        <div className='flex items-center gap-2 px-4 py-2.5 bg-yellow-100 rounded-[27px]'>
+                            {
+                                <div className='flex items-center gap-1'>
+                                    {Array.from({
+                                        length: fullStars,
+                                    }).map((_, i) => (
+                                        <Star
+                                            key={i}
+                                            className='text-yellow-500'
+                                            size={18}
+                                        />
+                                    ))}
+                                    {Array.from({
+                                        length: halfStar,
+                                    }).map((_, i) => (
+                                        <StarHalf
+                                            key={i}
+                                            className='text-yellow-500'
+                                            size={18}
+                                        />
+                                    ))}
+                                    {Array.from({
+                                        length: emptyStars,
+                                    }).map((_, i) => (
+                                        <Star
+                                            key={i}
+                                            className='opacity-45'
+                                            size={18}
+                                        />
+                                    ))}
+                                </div>
+                            }
+                            <p className='text-sm text-primary-orange font-semibold'>
+                                {rating}
+                            </p>
+                        </div>
 
-                    <div className='flex items-center gap-2 px-4 py-2.5 bg-white-200 rounded-[27px]'>
-                        <Image
-                            src='/assets/icons/comment.svg'
-                            alt='comment'
-                            width={16}
-                            height={16}
-                        />
-                        <p className='text-xs text-blue-800 font-semibold'>
-                            {reviewsCount} Reviews
-                        </p>
-                    </div>
-                </div>
+                        <div className='flex items-center gap-2 px-4 py-2.5 bg-white-200 rounded-[27px]'>
+                            <Image
+                                src='/assets/icons/comment.svg'
+                                alt='comment'
+                                width={16}
+                                height={16}
+                            />
 
-                <p className='text-xs text-black opacity-50'>
-                    <span className='text-primary-green font-semibold'>
-                        {lastMonthPurchases}K
-                    </span>
-                    &nbsp; bought in past month
-                </p>
+                            <p className='text-xs text-blue-800 font-semibold'>
+                                {reviewsCount} Reviews
+                            </p>
+                        </div>
+                    </div>
+                ) : null}
+
+                {lastMonthPurchases ? (
+                    <p className='text-xs text-black opacity-50'>
+                        <span className='text-primary-green font-semibold'>
+                            {lastMonthPurchases}K
+                        </span>
+                        &nbsp; bought in past month
+                    </p>
+                ) : null}
             </section>
         </section>
     )

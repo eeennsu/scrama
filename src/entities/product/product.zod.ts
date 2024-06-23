@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const SearchedProductPriceSchema = z.object({
+const SearchedProductPriceSchema = z.object({
     discountedPrice: z.number().nullish(),
     originalPrice: z.number().optional(),
     currency: z.string().optional(),
@@ -13,7 +13,7 @@ export const CarouselProductImageSchema = z.object({
 })
 
 export const CommonProductSchema = z.object({
-    id: z.string().optional(),
+    id: z.number(),
     title: z.string().optional(),
     url: z.string().url().optional(),
     image: z.string().url().optional(),
@@ -36,6 +36,17 @@ export const SearchedProductSchema = CommonProductSchema.extend({
     stock: z.string().nullish(),
 })
 
+export const ProductCommentSchema = z.object({
+    id: z.number(),
+    author: z.object({
+        name: z.string().optional(),
+        image: z.string().url().optional(),
+    }),
+    date: z.string().optional(),
+    content: z.string().optional(),
+    rating: z.string().optional(),
+})
+
 export const DetailProductSchema = CommonProductSchema.omit({
     id: true,
     url: true,
@@ -49,4 +60,5 @@ export const DetailProductSchema = CommonProductSchema.omit({
         deliveryCost: z.string().optional(),
         importCost: z.string().optional(),
     }),
+    comments: z.array(ProductCommentSchema),
 })

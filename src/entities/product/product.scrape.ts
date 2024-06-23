@@ -6,6 +6,7 @@ import type {
 } from './product.types'
 import type { CheerioAPI } from 'cheerio'
 import {
+    extractComments,
     extractDescriptions,
     extractLastMonthPurchases,
     extractPrice,
@@ -53,10 +54,8 @@ export const scrapeTodaysDealsProductList = (
     const todaysDealsProductList: TodaysDealsProductType[] = []
 
     $('div[data-testid="virtuoso-item-list"] div[data-test-index]').each(
-        (_, el) => {
+        (i, el) => {
             const element = $(el)
-
-            const id = element.attr('data-testid')?.trim()
 
             const title = element
                 .find('.ProductCard-module__title_awabIOxk6xfKvxKcdKDH')
@@ -85,7 +84,7 @@ export const scrapeTodaysDealsProductList = (
                 .trim()
 
             const todaysDealsProduct: TodaysDealsProductType = {
-                id,
+                id: i,
                 title,
                 discountedPercent,
                 avaliableCoupon,
@@ -108,17 +107,17 @@ export const scrapeSearchedAmazonProductList = (
     $('div[data-component-type="s-search-result"]').each((i, el) => {
         const element = $(el)
 
-        const id =
-            element.attr('data-uuid')?.trim() ||
-            element.attr('data-asin')?.trim()
-
         const title = element
             .find('div.s-title-instructions-style')
             .text()
             .trim()
 
         const image = element.find('img.s-image').attr('src')
-        const url = element.find('a.a-link-normal').attr('href')
+        let url = element.find('a.a-link-normal').attr('href')
+
+        url = !url?.startsWith('https://www.amazon.com/')
+            ? `https://www.amazon.com/${url}`
+            : url
 
         const membership = element
             .find('div[data-cy="secondary-offer-recipe"] span')
@@ -147,7 +146,7 @@ export const scrapeSearchedAmazonProductList = (
         const lastMonthPurchases = extractLastMonthPurchases(element)
 
         const searchedProduct: SearchedProductType = {
-            id,
+            id: i,
             title,
             image,
             url,
@@ -158,9 +157,7 @@ export const scrapeSearchedAmazonProductList = (
             lastMonthPurchases,
         }
 
-        if (id) {
-            searchedProducts.push(searchedProduct)
-        }
+        searchedProducts.push(searchedProduct)
     })
 
     return searchedProducts
@@ -203,9 +200,11 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
         ?.at(0)
 
     const brand = $('#bylineInfo').text().trim().split(' ')?.at(2)
-    const reviewsCount = Number(
-        $('#acrCustomerReviewText').text().trim().match(/\d+/)?.join('')
-    )
+    const reviewsCount = $('#acrCustomerReviewText')
+        .text()
+        .trim()
+        .match(/\d+/)
+        ?.join('')
 
     const lastMonthPurchases = +$(
         '#social-proofing-faceout-title-tk_bought span'
@@ -219,8 +218,12 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
         .text()
         .trim()
         .split('&')
-    const importCost = deliveryInfos?.at(0)?.trim()
+
+    const importCost =
+        (deliveryInfos.length > 1 && deliveryInfos?.at(0)?.trim()) || undefined
     const deliveryCost = deliveryInfos?.at(1)?.trim().split(' ')?.at(0)
+
+    const comments = extractComments($)
 
     const amazonProduct: DetailProductType = {
         title,
@@ -234,12 +237,13 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
         isAvaliable: availabilty === 'in stock',
         brand,
         rating,
-        reviewsCount,
+        reviewsCount: reviewsCount ? +reviewsCount : undefined,
         lastMonthPurchases,
         delivery: {
             deliveryCost,
             importCost,
         },
+        comments,
     }
 
     return amazonProduct

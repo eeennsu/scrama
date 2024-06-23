@@ -15,7 +15,7 @@ interface Props {
 
 export const ProductData: FC<Props> = ({ product, url }) => {
     return (
-        <>
+        <article className='flex flex-col gap-8'>
             <section className='flex gap-28 xl:flex-row flex-col'>
                 <div className='flex-1 flex flex-col'>
                     <ProductTitle
@@ -73,6 +73,6 @@ export const ProductData: FC<Props> = ({ product, url }) => {
             </section>
 
             <ProductDescriptions descriptions={product?.descriptions} />
-        </>
+        </article>
     )
 }

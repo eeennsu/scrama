@@ -1,3 +1,4 @@
+import { ProductCommentType } from '@/entities/product'
 import cheerio, { Cheerio, CheerioAPI, Element } from 'cheerio'
 
 export const generateTitle = (
@@ -67,8 +68,8 @@ export const extractPrice = (...elements: Cheerio<Element>[]): number => {
     return Number(foundPrice)
 }
 
-export const extractDescriptions = ($: CheerioAPI) => {
-    const descirptions: string[] = []
+export const extractDescriptions = ($: CheerioAPI): string[] => {
+    const descriptions: string[] = []
 
     $('#feature-bullets')
         .find('span.a-list-item')
@@ -76,11 +77,22 @@ export const extractDescriptions = ($: CheerioAPI) => {
             const description = $(el).text().trim()
 
             if (description) {
-                descirptions.push(description)
+                descriptions.push(description)
             }
         })
 
-    return descirptions
+    if (descriptions.length === 0) {
+        $('ul.a-unordered-list.a-vertical.a-spacing-small li').each(
+            (_, element) => {
+                const description = $(element).text().trim()
+                if (description) {
+                    descriptions.push(description)
+                }
+            }
+        )
+    }
+
+    return descriptions
 }
 
 export const extractLastMonthPurchases = (
@@ -101,4 +113,41 @@ export const extractLastMonthPurchases = (
     }
 
     return boughtInPastMonthNumber
+}
+
+export const extractComments = ($: CheerioAPI): ProductCommentType[] => {
+    const comments: ProductCommentType[] = []
+
+    $('div[data-hook="review"].review').each((i, el) => {
+        const comment = $(el)
+
+        const rating = comment
+            .find('span.a-icon-alt')
+            .text()
+            .trim()
+            .replace(' out of 5 stars', '')
+        const content = comment
+            .find('.reviewText.review-text-content')
+            .text()
+            .trim()
+
+        const authorName = comment.find('span.a-profile-name').text().trim()
+        const authorImage = comment.find('img').first().attr('data-src')
+        const date = comment.find('.review-date').text().trim()
+
+        comments.push({
+            id: i,
+            author: {
+                name: authorName,
+                image: authorImage,
+            },
+            rating,
+            content,
+            date,
+        })
+
+        if (comments.length >= 3) return false
+    })
+
+    return comments
 }
