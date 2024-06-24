@@ -24,7 +24,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
             <Card
                 className={cn(
                     'flex w-full h-full items-center group max-sm:flex-col',
-                    isNotLongLeft && 'border-2 border-orange-400'
+                    isNotLongLeft && 'border-2 bg-orange-200'
                 )}
             >
                 <CardHeader className='pr-2'>
@@ -40,7 +40,12 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                             <figcaption className='-bottom-7 left-0 right-0 justify-center absolute text-xs flex gap-2 font-medium items-center text-gray-600'>
                                 <i>Left in stock:</i>
                                 <span className='text-gray-900 font-bold'>
-                                    {product?.stock || 123}
+                                    {product?.stock || (
+                                        <FileQuestion
+                                            size={16}
+                                            className='text-gray-800'
+                                        />
+                                    )}
                                 </span>
                             </figcaption>
                         )}
@@ -52,7 +57,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                     </CardTitle>
                     <div className='flex flex-col gap-2 truncate'>
                         <div className='flex justify-between'>
-                            {!product?.price && !product.membership && (
+                            {!product?.price && (
                                 <FileQuestion
                                     size={16}
                                     className='text-gray-800'
@@ -62,11 +67,6 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                                 {product?.price && (
                                     <span className='text-lg font-semibold text-gray-700'>
                                         {product?.price}
-                                    </span>
-                                )}
-                                {product?.membership && (
-                                    <span className='text-xs leading-6 font-medium text-gray-400'>
-                                        {product?.membership}
                                     </span>
                                 )}
                             </div>

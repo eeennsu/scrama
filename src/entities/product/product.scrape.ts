@@ -123,12 +123,6 @@ export const scrapeSearchedAmazonProductList = (
             ? `https://www.amazon.com/${url}`
             : url
 
-        const membership = element
-            .find('div[data-cy="secondary-offer-recipe"] span')
-            .first()
-            .text()
-            .trim()
-
         const price = extractSearchedProductPrice(element) || null
 
         const rating = element
@@ -154,7 +148,6 @@ export const scrapeSearchedAmazonProductList = (
             title,
             image,
             url,
-            membership: membership.includes('Prime') ? membership : null,
             price,
             rating,
             stock,
@@ -215,7 +208,6 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
         .trim()
         .replace(/[^0-9]/g, '')
 
-    console.log('reviewsCount', reviewsCount)
     const lastMonthPurchases = +$(
         '#social-proofing-faceout-title-tk_bought span'
     )
