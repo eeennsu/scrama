@@ -4,8 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "install-deps": "bash install-deps.sh",
-        "build": "pnpm run install-deps && next build",
+        "build": "next build",
         "start": "next start",
         "lint": "next lint",
         "pretty": "prettier --write \"src/**/*.{js,ts,tsx,jsx,json,css}\""
