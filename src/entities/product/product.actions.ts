@@ -7,10 +7,7 @@ import {
     scrapeSearchedAmazonProductList,
     scrapeTodaysDealsProductList,
 } from './product.scrape'
-import {
-    getPageContent,
-    getPageContentWithScroll,
-} from '@/shared/utils/puppeteer'
+import { getPageContentWithScroll } from '@/shared/utils/puppeteer'
 import { checkEnvVariable } from '@/shared/utils'
 import { getBrightDataOptions } from '@/shared/lib'
 import * as cheerio from 'cheerio'
@@ -42,7 +39,7 @@ export const requestGetTodayDealsAmazonProductList = async () => {
         const content = await getPageContentWithScroll(todayDealsUrl)
         const $ = cheerio.load(content)
 
-        const todayDetailProducts = scrapeTodaysDealsProductList($)
+        const todayDetailProducts = scrapeTodaysDealsProductList($) || []
 
         return todayDetailProducts
     } catch (error: any) {

@@ -31,7 +31,6 @@ export const TodaysDealsProductSchema = CommonProductSchema.omit({
 })
 
 export const SearchedProductSchema = CommonProductSchema.extend({
-    membership: z.string().nullish(),
     price: z.string().nullish(),
     stock: z.string().nullish(),
 })
