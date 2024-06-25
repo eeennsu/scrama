@@ -1,7 +1,7 @@
 import type { GoToOptions } from 'puppeteer'
 import { scrollPageToBottom } from 'puppeteer-autoscroll-down'
-import puppeteer from 'puppeteer'
 import { checkEnvVariable } from './valid'
+import puppeteer from 'puppeteer'
 
 export const getPageContentWithScroll = async (
     url: string,
