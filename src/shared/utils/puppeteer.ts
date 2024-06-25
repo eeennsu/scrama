@@ -1,12 +1,17 @@
 import type { GoToOptions } from 'puppeteer'
 import { scrollPageToBottom } from 'puppeteer-autoscroll-down'
 import puppeteer from 'puppeteer'
+import { checkEnvVariable } from './valid'
 
 export const getPageContentWithScroll = async (
     url: string,
     options: GoToOptions = { waitUntil: 'networkidle2' }
 ): Promise<string> => {
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        executablePath: checkEnvVariable(process.env.CHROME_PATH),
+    })
     const page = await browser.newPage()
 
     await page.goto(url, options)
