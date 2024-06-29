@@ -3,11 +3,22 @@ import { scrollPageToBottom } from 'puppeteer-autoscroll-down'
 import puppeteer from 'puppeteer'
 
 
+const setupPuppeteer = async () => {
+
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+
+    })
+
+    return browser
+}
+
 export const getPageContentWithScroll = async (
     url: string,
     options: GoToOptions = { waitUntil: 'networkidle2' }
 ): Promise<string> => {
-    const browser = await puppeteer.launch()
+    const browser = await setupPuppeteer()
 
     const page = await browser.newPage()
 
@@ -25,7 +36,7 @@ export const getPageContent = async (
     url: string,
     options: GoToOptions = { waitUntil: 'networkidle2' }
 ): Promise<string> => {
-    const browser = await puppeteer.launch()
+    const browser = await setupPuppeteer()
     const page = await browser.newPage()
     await page.goto(url, options)
 
