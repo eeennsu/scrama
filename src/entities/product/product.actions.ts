@@ -32,9 +32,7 @@ export async function requestGetAmazonProductsImages() {
 
 export const requestGetTodayDealsAmazonProductList = async () => {
     try {
-        const todayDealsUrl = checkEnvVariable(
-            process.env.AMAZON_TODAY_DEALS_URL
-        )
+        const todayDealsUrl = 'https://www.amazon.com/gp/goldbox?ref_=nav_cs_gb'
 
         const content = await getPageContentWithScroll(todayDealsUrl)
         const $ = cheerio.load(content)
