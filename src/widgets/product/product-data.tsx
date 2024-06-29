@@ -1,10 +1,5 @@
 import type { FC } from 'react'
-import {
-    ProductInfoCard,
-    ProductPrice,
-    ProductTitle,
-    ProductDescriptions,
-} from '@/features/product'
+import { ProductInfoCard, ProductPrice, ProductTitle, ProductDescriptions } from '@/features/product'
 import { DetailProductType } from '@/entities/product'
 import Image from 'next/image'
 
@@ -40,11 +35,7 @@ export const ProductData: FC<Props> = ({ product, url }) => {
                             <ProductInfoCard
                                 title='Stock'
                                 icon='/assets/icons/database.svg'
-                                label={
-                                    product?.isAvaliable
-                                        ? 'In Stock'
-                                        : 'Out of Stock'
-                                }
+                                label={product?.isAvaliable ? 'In Stock' : 'Out of Stock'}
                             />
                             <ProductInfoCard
                                 title='Import'

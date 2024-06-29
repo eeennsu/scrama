@@ -11,12 +11,7 @@ interface Props {
     lastMonthPurchases: DetailProductType['lastMonthPurchases']
 }
 
-export const ProductPrice: FC<Props> = ({
-    price,
-    rating,
-    lastMonthPurchases,
-    reviewsCount,
-}) => {
+export const ProductPrice: FC<Props> = ({ price, rating, lastMonthPurchases, reviewsCount }) => {
     const { fullStars, halfStar, emptyStars } = convertToStars(rating || '0')
 
     return (
@@ -28,8 +23,7 @@ export const ProductPrice: FC<Props> = ({
 
                 {price?.discountedPrice !== price?.originalPrice && (
                     <p className='text-lg text-black opacity-50 line-through'>
-                        {price?.currency}{' '}
-                        {formatPrice(price?.originalPrice || 0)}
+                        {price?.currency} {formatPrice(price?.originalPrice || 0)}
                     </p>
                 )}
             </section>
@@ -69,9 +63,7 @@ export const ProductPrice: FC<Props> = ({
                                     ))}
                                 </div>
                             }
-                            <p className='text-sm text-primary-orange font-semibold'>
-                                {rating}
-                            </p>
+                            <p className='text-sm text-primary-orange font-semibold'>{rating}</p>
                         </div>
 
                         <div className='flex items-center gap-2 px-4 py-2.5 bg-white-200 rounded-[27px]'>
@@ -91,9 +83,7 @@ export const ProductPrice: FC<Props> = ({
 
                 {lastMonthPurchases ? (
                     <p className='text-xs text-black opacity-50'>
-                        <span className='text-primary-green font-semibold'>
-                            {lastMonthPurchases}K
-                        </span>
+                        <span className='text-primary-green font-semibold'>{lastMonthPurchases}K</span>
                         &nbsp; bought in past month
                     </p>
                 ) : null}

@@ -25,8 +25,7 @@ export const Intro: FC = async () => {
                         <span className='font-bold italic'> Next.js</span>
                     </h1>
                     <p className='text-gray-800'>
-                        Powerful, self-serve product and growth analytics to
-                        help you convert, engage, and retain more.
+                        Powerful, self-serve product and growth analytics to help you convert, engage, and retain more.
                     </p>
                     <Searchbar />
                 </div>

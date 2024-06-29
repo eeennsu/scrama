@@ -17,15 +17,12 @@ const SearchPage: FC<Props> = async ({ searchParams }) => {
     }
 
     const amazonSearchedLink = converAmazonLink(keyword)
-    const searchedProducts =
-        await requestGetSearchedProductList(amazonSearchedLink)
+    const searchedProducts = await requestGetSearchedProductList(amazonSearchedLink)
 
     return (
         <>
             <SearchHead keyword={keyword} />
-            {!!searchedProducts && (
-                <SearchedProducts products={searchedProducts} />
-            )}
+            {!!searchedProducts && <SearchedProducts products={searchedProducts} />}
         </>
     )
 }

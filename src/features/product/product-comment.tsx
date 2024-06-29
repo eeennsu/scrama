@@ -18,12 +18,8 @@ export const ProductComment: FC<Props> = ({ comment }) => {
             />
             <div className='flex flex-col gap-1'>
                 <div className='flex items-center gap-2'>
-                    <span className='font-semibold'>
-                        {comment?.author?.name || 'Amazon'}
-                    </span>
-                    <span className='text-xs text-gray-500'>
-                        {comment?.date}
-                    </span>
+                    <span className='font-semibold'>{comment?.author?.name || 'Amazon'}</span>
+                    <span className='text-xs text-gray-500'>{comment?.date}</span>
                 </div>
                 <p>{comment?.content}</p>
             </div>

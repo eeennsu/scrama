@@ -17,9 +17,7 @@ export const Header: FC = () => {
                         alt='logo'
                     />
 
-                    <p className='font-spaceGrotesk text-[21px] font-bold text-gray-700'>
-                        Scrama
-                    </p>
+                    <p className='font-spaceGrotesk text-[21px] font-bold text-gray-700'>Scrama</p>
                 </Link>
             </nav>
         </header>

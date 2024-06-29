@@ -1,13 +1,8 @@
 import { ProductCommentType } from '@/entities/product'
 import cheerio, { Cheerio, CheerioAPI, Element } from 'cheerio'
 
-export const generateTitle = (
-    product: Cheerio<Element>,
-    link?: string
-): string => {
-    const title = product
-        .find('.a-size-medium.a-color-base.a-text-normal')
-        .text()
+export const generateTitle = (product: Cheerio<Element>, link?: string): string => {
+    const title = product.find('.a-size-medium.a-color-base.a-text-normal').text()
 
     // If title is empty
     if (title === '') {
@@ -24,21 +19,11 @@ export const generateTitle = (
     return title
 }
 
-export const extractSearchedProductPrice = (
-    element: Cheerio<Element>
-): string => {
+export const extractSearchedProductPrice = (element: Cheerio<Element>): string => {
     return (
         element.find('span.a-price span.a-offscreen').first().text().trim() ||
-        element
-            .find('div[data-cy="secondary-offer-recipe"] span.a-color-base')
-            .first()
-            .text()
-            .trim() ||
-        element
-            .find('div[data-cy="price-recipe"] .a-row.a-size-base.a-color-base')
-            .eq(1)
-            .text()
-            .trim()
+        element.find('div[data-cy="secondary-offer-recipe"] span.a-color-base').first().text().trim() ||
+        element.find('div[data-cy="price-recipe"] .a-row.a-size-base.a-color-base').eq(1).text().trim()
     )
 }
 
@@ -82,31 +67,21 @@ export const extractDescriptions = ($: CheerioAPI): string[] => {
         })
 
     if (descriptions.length === 0) {
-        $('ul.a-unordered-list.a-vertical.a-spacing-small li').each(
-            (_, element) => {
-                const description = $(element).text().trim()
-                if (description) {
-                    descriptions.push(description)
-                }
+        $('ul.a-unordered-list.a-vertical.a-spacing-small li').each((_, element) => {
+            const description = $(element).text().trim()
+            if (description) {
+                descriptions.push(description)
             }
-        )
+        })
     }
 
     return descriptions
 }
 
-export const extractLastMonthPurchases = (
-    element: Cheerio<Element>
-): number | null => {
-    const purchasesText = element
-        .find('.a-size-base.a-color-secondary:contains("bought in past month")')
-        .text()
-        .trim()
+export const extractLastMonthPurchases = (element: Cheerio<Element>): number | null => {
+    const purchasesText = element.find('.a-size-base.a-color-secondary:contains("bought in past month")').text().trim()
 
-    const boughtInPastMonthNumber = parseInt(
-        purchasesText.replace(/[^0-9]/g, ''),
-        10
-    )
+    const boughtInPastMonthNumber = parseInt(purchasesText.replace(/[^0-9]/g, ''), 10)
 
     if (isNaN(boughtInPastMonthNumber)) {
         return null
@@ -121,15 +96,8 @@ export const extractComments = ($: CheerioAPI): ProductCommentType[] => {
     $('div[data-hook="review"].review').each((i, el) => {
         const comment = $(el)
 
-        const rating = comment
-            .find('span.a-icon-alt')
-            .text()
-            .trim()
-            .replace(' out of 5 stars', '')
-        const content = comment
-            .find('.reviewText.review-text-content')
-            .text()
-            .trim()
+        const rating = comment.find('span.a-icon-alt').text().trim().replace(' out of 5 stars', '')
+        const content = comment.find('.reviewText.review-text-content').text().trim()
 
         const authorName = comment.find('span.a-profile-name').text().trim()
         const authorImage = comment.find('img').first().attr('data-src')

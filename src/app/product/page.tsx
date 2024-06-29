@@ -24,9 +24,7 @@ const DetailProductPage: NextPage<Props> = async ({ searchParams }) => {
                 product={product}
                 url={url}
             />
-            {product?.comments.length > 0 && (
-                <ProductComments comments={product?.comments} />
-            )}
+            {product?.comments.length > 0 && <ProductComments comments={product?.comments} />}
         </main>
     )
 }

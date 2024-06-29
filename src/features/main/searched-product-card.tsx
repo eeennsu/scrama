@@ -1,11 +1,6 @@
 import type { FC } from 'react'
 import type { SearchedProductType } from '@/entities/product/product.types'
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/shared/ui/components/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/components/card'
 import { Badge } from '@/shared/ui/components/badge'
 import { FileQuestion, HeartOff, Star, StarOff } from 'lucide-react'
 import { cn } from '@/shared/lib'
@@ -52,9 +47,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                     </figure>
                 </CardHeader>
                 <CardContent className='py-4 flex flex-col gap-5 flex-1'>
-                    <CardTitle className='line-clamp-3 text-2xl group-hover:underline'>
-                        {product?.title}
-                    </CardTitle>
+                    <CardTitle className='line-clamp-3 text-2xl group-hover:underline'>{product?.title}</CardTitle>
                     <div className='flex flex-col gap-2 truncate'>
                         <div className='flex justify-between'>
                             {!product?.price && (
@@ -65,9 +58,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                             )}
                             <div className='flex items-end gap-1.5'>
                                 {product?.price && (
-                                    <span className='text-lg font-semibold text-gray-700'>
-                                        {product?.price}
-                                    </span>
+                                    <span className='text-lg font-semibold text-gray-700'>{product?.price}</span>
                                 )}
                             </div>
 
@@ -95,9 +86,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                                     {product?.lastMonthPurchases ? (
                                         <span className='text-gray-900 inline-flex gap-0.5 font-bold'>
                                             {product?.lastMonthPurchases}
-                                            <span className='text-gray-600 font-normal'>
-                                                K
-                                            </span>
+                                            <span className='text-gray-600 font-normal'>K</span>
                                         </span>
                                     ) : (
                                         <HeartOff size={16} />

@@ -9,8 +9,7 @@ export const SearchHead: FC<Props> = ({ keyword }) => {
     return (
         <section className='flex w-full max-lg:flex-col max-lg:gap-4 items-center justify-between'>
             <h1 className='text-2xl font-semibold text-gray-800'>
-                Searched Keyword{' '}
-                <span className='text-blue-600 truncate'>{keyword}</span>
+                Searched Keyword <span className='text-blue-600 truncate'>{keyword}</span>
             </h1>
 
             <Searchbar

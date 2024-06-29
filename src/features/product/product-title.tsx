@@ -13,9 +13,7 @@ export const ProductTitle: FC<Props> = ({ title, url }) => {
     return (
         <section className='flex justify-between items-start gap-5 flex-wrap pb-6'>
             <div className='flex flex-col gap-3'>
-                <p className='text-[28px] text-gray-800 font-semibold'>
-                    {title}
-                </p>
+                <p className='text-[28px] text-gray-800 font-semibold'>{title}</p>
             </div>
 
             <div className='flex items-center gap-3'>

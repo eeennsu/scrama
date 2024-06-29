@@ -21,9 +21,7 @@ export default function RootLayout({
             <body className={inter.className}>
                 <div className='flex w-full min-h-dvh flex-col'>
                     <Header />
-                    <div className='container w-full mx-auto flex flex-col flex-1'>
-                        {children}
-                    </div>
+                    <div className='container w-full mx-auto flex flex-col flex-1'>{children}</div>
                 </div>
             </body>
         </html>
