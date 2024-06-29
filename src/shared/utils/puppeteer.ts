@@ -1,23 +1,13 @@
 import type { GoToOptions } from 'puppeteer'
 import { scrollPageToBottom } from 'puppeteer-autoscroll-down'
-import puppeteer from 'puppeteer-core'
-import chromium from 'chrome-aws-lambda'
+import puppeteer from 'puppeteer'
 
-const setupPuppeteer = async () => {
-    const browser = await puppeteer.launch({
-        args: chromium.args,
-        executablePath: await chromium.executablePath,
-        headless: chromium.headless,
-    })
-
-    return browser
-}
 
 export const getPageContentWithScroll = async (
     url: string,
     options: GoToOptions = { waitUntil: 'networkidle2' }
 ): Promise<string> => {
-    const browser = await setupPuppeteer()
+    const browser = await puppeteer.launch()
 
     const page = await browser.newPage()
 
@@ -35,7 +25,7 @@ export const getPageContent = async (
     url: string,
     options: GoToOptions = { waitUntil: 'networkidle2' }
 ): Promise<string> => {
-    const browser = await setupPuppeteer()
+    const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto(url, options)
 
