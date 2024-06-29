@@ -11,3 +11,5 @@ const MainPage: NextPage = () => {
 }
 
 export default MainPage
+
+export const revalidate = 7200
