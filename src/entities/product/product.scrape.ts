@@ -13,124 +13,82 @@ import {
     extractSearchedProductPrice,
 } from '@/shared/utils'
 
-export const scrapeAmazonProductsImages = (
-    $: CheerioAPI
-): CarouselProductImageType[] => {
+export const scrapeAmazonProductsImages = ($: CheerioAPI): CarouselProductImageType[] => {
     const amazonProductsImages: CarouselProductImageType[] = []
 
-    $('img._fluid-quad-image-label-v2_style_fluidLandscapeImage__2euAK').each(
-        (_, el) => {
-            const element = $(el)
+    $('img._fluid-quad-image-label-v2_style_fluidLandscapeImage__2euAK').each((_, el) => {
+        const element = $(el)
 
-            let image = element.attr('data-a-hires') || element.attr('src')
-            const url = element.closest('a').attr('href')
+        let image = element.attr('data-a-hires') || element.attr('src')
+        const url = element.closest('a').attr('href')
 
-            if (amazonProductsImages.length >= 5) {
-                return false
-            }
-
-            if (image) {
-                image = image.replace(
-                    /_SX\d+_|_UX\d+_|_SY\d+_|_UY\d+_/,
-                    '_SX1500_'
-                )
-            }
-
-            if (image) {
-                amazonProductsImages.push({
-                    image,
-                    url: `https://www.amazon.com${url}`,
-                })
-            }
+        if (amazonProductsImages.length >= 5) {
+            return false
         }
-    )
+
+        if (image) {
+            image = image.replace(/_SX\d+_|_UX\d+_|_SY\d+_|_UY\d+_/, '_SX1500_')
+        }
+
+        if (image) {
+            amazonProductsImages.push({
+                image,
+                url: `https://www.amazon.com${url}`,
+            })
+        }
+    })
 
     return amazonProductsImages
 }
 
-export const scrapeTodaysDealsProductList = (
-    $: CheerioAPI
-): TodaysDealsProductType[] => {
+export const scrapeTodaysDealsProductList = ($: CheerioAPI): TodaysDealsProductType[] => {
     const todaysDealsProductList: TodaysDealsProductType[] = []
 
-    $('div[data-testid="virtuoso-item-list"] div[data-test-index]').each(
-        (i, el) => {
-            const element = $(el)
+    $('#slot-3 ol.a-carousel li.a-carousel-card').each((i, el) => {
+        const element = $(el)
 
-            const title = element
-                .find('.ProductCard-module__title_awabIOxk6xfKvxKcdKDH')
-                .text()
-                .trim()
+        const title = $(element).find('span._ZGlzY_title_3k8Rn').text().trim()
+        const link = $(element).find('a.a-link-normal').attr('href')
+        const image = $(element).find('img').attr('data-a-hires') || $(element).find('img').attr('src')
+        const price = $(element).find('div._ZGlzY_priceToPay_EfL5V span.a-price span.a-offscreen').first().text().trim()
+        const discounted = $('._ZGlzY_badgeLabel_1DEKK .a-size-mini').first().text().trim()
+        const url = link?.startsWith('http') ? link : `https://www.amazon.com${link}`
 
-            const imageElement = element.find(
-                'img.ProductCardImage-module__image_SU6C7KYJpko3vQ2fK7Kf'
-            )
-
-            const image =
-                imageElement.attr('data-a-hires') || imageElement.attr('src')
-
-            const url = element.find('a').attr('href')
-
-            const discountedPercent = element
-                .find(
-                    'div[data-component="dui-badge"] div.style_badgeLabel__dD0Hv'
-                )
-                .text()
-                .trim()
-
-            const avaliableCoupon = element
-                .find('div[data-component="dui-coupon-badge"]')
-                .text()
-                .trim()
-
-            const todaysDealsProduct: TodaysDealsProductType = {
-                id: i,
-                title,
-                discountedPercent,
-                avaliableCoupon,
-                image,
-                url,
-            }
-
-            todaysDealsProductList.push(todaysDealsProduct)
-
-            if (todaysDealsProductList.length >= 8) {
-                return false
-            }
+        const todaysDealsProduct: TodaysDealsProductType = {
+            id: i,
+            title,
+            price,
+            image,
+            discounted,
+            url,
         }
-    )
+
+        todaysDealsProductList.push(todaysDealsProduct)
+
+        if (todaysDealsProductList.length >= 8) {
+            return false
+        }
+    })
 
     return todaysDealsProductList
 }
 
-export const scrapeSearchedAmazonProductList = (
-    $: CheerioAPI
-): SearchedProductType[] => {
+export const scrapeSearchedAmazonProductList = ($: CheerioAPI): SearchedProductType[] => {
     const searchedProducts: SearchedProductType[] = []
 
     $('div[data-component-type="s-search-result"]').each((i, el) => {
         const element = $(el)
 
-        const title = element
-            .find('div.s-title-instructions-style')
-            .text()
-            .trim()
+        const title = element.find('div.s-title-instructions-style').text().trim()
 
         const image = element.find('img.s-image').attr('src')
         let url = element.find('a.a-link-normal').attr('href')
 
-        url = !url?.startsWith('https://www.amazon.com/')
-            ? `https://www.amazon.com/${url}`
-            : url
+        url = !url?.startsWith('https://www.amazon.com/') ? `https://www.amazon.com/${url}` : url
 
         const price = extractSearchedProductPrice(element) || null
 
-        const rating = element
-            .find('span.a-icon-alt')
-            .text()
-            .trim()
-            .split(' ')
-            ?.at(0)
+        const rating = element.find('span.a-icon-alt').text().trim().split(' ')?.at(0)
 
         const stock =
             element
@@ -161,10 +119,7 @@ export const scrapeSearchedAmazonProductList = (
 }
 
 export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
-    const title =
-        $('#titleSection').text().trim() ||
-        $('#title').text().trim() ||
-        $('#productTitle').text().trim()
+    const title = $('#titleSection').text().trim() || $('#title').text().trim() || $('#productTitle').text().trim()
 
     const discountedPrice = extractPrice(
         $('span.a-price span.a-offscreen'),
@@ -186,9 +141,7 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
 
     const availabilty = $('#availability').text().trim().toLocaleLowerCase()
 
-    const imageElements = $('#imgTagWrapperId > img')
-        .first()
-        .attr('data-a-dynamic-image')
+    const imageElements = $('#imgTagWrapperId > img').first().attr('data-a-dynamic-image')
 
     // $('#landingImage').attr('data-a-dynamic-image')
 
@@ -208,21 +161,14 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
         .trim()
         .replace(/[^0-9]/g, '')
 
-    const lastMonthPurchases = +$(
-        '#social-proofing-faceout-title-tk_bought span'
-    )
+    const lastMonthPurchases = +$('#social-proofing-faceout-title-tk_bought span')
         .text()
         .trim()
         .replace(/[^0-9]/g, '')
 
-    const deliveryInfos = $('#amazonGlobal_feature_div > span')
-        .first()
-        .text()
-        .trim()
-        .split('&')
+    const deliveryInfos = $('#amazonGlobal_feature_div > span').first().text().trim().split('&')
 
-    const importCost =
-        (deliveryInfos.length > 1 && deliveryInfos?.at(0)?.trim()) || undefined
+    const importCost = (deliveryInfos.length > 1 && deliveryInfos?.at(0)?.trim()) || undefined
     const deliveryCost = deliveryInfos?.at(1)?.trim().split(' ')?.at(0)
 
     const comments = extractComments($)

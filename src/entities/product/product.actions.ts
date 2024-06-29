@@ -7,35 +7,39 @@ import {
     scrapeSearchedAmazonProductList,
     scrapeTodaysDealsProductList,
 } from './product.scrape'
-import { getPageContentWithScroll } from '@/shared/utils/puppeteer'
-import { checkEnvVariable } from '@/shared/utils'
-import { getBrightDataOptions } from '@/shared/lib'
+import { getBrightDataOptions, retryFetch } from '@/shared/lib'
 import * as cheerio from 'cheerio'
 import axios from 'axios'
 
 export async function requestGetAmazonProductsImages() {
-    try {
-        const options = getBrightDataOptions()
-        const { data } = await axios.get(
-            'https://www.amazon.com/ref=nav_logo',
-            options
-        )
+    const fetch = async () => {
+        try {
+            const options = getBrightDataOptions()
+            const { data } = await axios.get('https://www.amazon.com/ref=nav_logo', options)
 
-        const $ = cheerio.load(data)
-        const amazonProductsImages = scrapeAmazonProductsImages($) || []
+            const $ = cheerio.load(data)
+            const amazonProductsImages = scrapeAmazonProductsImages($) || []
 
-        return amazonProductsImages
-    } catch (error: any) {
-        throw new Error(`Failed to scrape product images: ${error.message}`)
+            return amazonProductsImages
+        } catch (error: any) {
+            throw new Error(`Failed to scrape product images: ${error.message}`)
+        }
     }
+
+    return retryFetch({
+        fetch,
+        condition: (images) => images.length > 0,
+    })
 }
 
 export const requestGetTodayDealsAmazonProductList = async () => {
     try {
-        const todayDealsUrl = 'https://www.amazon.com/gp/goldbox?ref_=nav_cs_gb'
+        const options = getBrightDataOptions()
+        const todayDealsUrl =
+            'https://www.amazon.com/gp/goldbox?ref_=nav_cs_gb&discounts-widget=%2522%257B%255C%2522state%255C%2522%253A%257B%255C%2522refinementFilters%255C%2522%253A%257B%257D%257D%252C%255C%2522version%255C%2522%253A1%257D%2522'
 
-        const content = await getPageContentWithScroll(todayDealsUrl)
-        const $ = cheerio.load(content)
+        const { data } = await axios.get(todayDealsUrl, options)
+        const $ = cheerio.load(data)
 
         const todayDetailProducts = scrapeTodaysDealsProductList($) || []
 
@@ -45,9 +49,7 @@ export const requestGetTodayDealsAmazonProductList = async () => {
     }
 }
 
-export const requestGetSearchedProductList = async (
-    url: string
-): Promise<SearchedProductType[]> => {
+export const requestGetSearchedProductList = async (url: string): Promise<SearchedProductType[]> => {
     try {
         const options = getBrightDataOptions()
         const { data } = await axios.get(url, options)
@@ -57,15 +59,11 @@ export const requestGetSearchedProductList = async (
 
         return searchedProducts
     } catch (error: any) {
-        throw new Error(
-            `Failed to scrape searched product list: ${error.message}`
-        )
+        throw new Error(`Failed to scrape searched product list: ${error.message}`)
     }
 }
 
-export async function requestGetDetailAmazonProduct(
-    url: string
-): Promise<DetailProductType> {
+export async function requestGetDetailAmazonProduct(url: string): Promise<DetailProductType> {
     try {
         const options = getBrightDataOptions()
         const { data } = await axios.get(url, options)

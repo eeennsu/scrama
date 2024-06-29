@@ -5,8 +5,9 @@ import { CarouselProductImageType } from '@/entities/product'
 import { useRouter } from 'next/navigation'
 import Imagegallery, { ReactImageGalleryItem } from 'react-image-gallery'
 import Image from 'next/image'
+import Link from 'next/link'
 interface Props {
-    productImages: CarouselProductImageType[]
+    productImages?: CarouselProductImageType[]
 }
 
 export const HeroCarousel: FC<Props> = ({ productImages }) => {
@@ -14,7 +15,7 @@ export const HeroCarousel: FC<Props> = ({ productImages }) => {
 
     const heroImagesWithStyles = useMemo(
         () =>
-            productImages?.reduce<ReactImageGalleryItem[]>((acc, product) => {
+            (productImages || dummyImages)?.reduce<ReactImageGalleryItem[]>((acc, product) => {
                 return [
                     ...acc,
                     {
@@ -22,21 +23,26 @@ export const HeroCarousel: FC<Props> = ({ productImages }) => {
                         originalAlt: 'hero',
                         renderItem: (item) => {
                             return (
-                                <figure
-                                    key={item?.original}
-                                    className='w-[464px] h-[464px] relative'
-                                    onClick={() =>
-                                        product?.url &&
-                                        router.push(product?.url)
+                                <Link
+                                    href={
+                                        product?.url
+                                            ? `/product?url=${encodeURIComponent(product?.url)}`
+                                            : 'https://www.amazon.com'
                                     }
                                 >
-                                    <Image
-                                        src={item.original}
-                                        alt={item.originalAlt || 'hero'}
-                                        fill
-                                        className='object-contain w-full h-full'
-                                    />
-                                </figure>
+                                    <figure
+                                        key={item?.original}
+                                        className='w-[464px] h-[464px] relative'
+                                        onClick={() => product?.url && product?.url && router.push(product?.url)}
+                                    >
+                                        <Image
+                                            src={item.original}
+                                            alt={item.originalAlt || 'hero'}
+                                            fill
+                                            className='object-contain w-full h-full'
+                                        />
+                                    </figure>
+                                </Link>
                             )
                         },
                     },
@@ -67,3 +73,11 @@ export const HeroCarousel: FC<Props> = ({ productImages }) => {
         </section>
     )
 }
+
+const dummyImages = [
+    { image: '/assets/images/hero-1.svg', alt: 'smartwatch' },
+    { image: '/assets/images/hero-2.svg', alt: 'bag' },
+    { image: '/assets/images/hero-3.svg', alt: 'lamp' },
+    { image: '/assets/images/hero-4.svg', alt: 'air fryer' },
+    { image: '/assets/images/hero-5.svg', alt: 'chair' },
+].map((item) => ({ ...item, url: null }))

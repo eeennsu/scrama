@@ -13,7 +13,7 @@ export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
     const ProductCard = () => {
         return (
             <Card className='w-[310px] group shadow-md'>
-                <CardContent className='flex flex-col w-full pt-6 gap-3'>
+                <CardContent className='flex flex-col w-full pb-3 pt-6 gap-3'>
                     <figure className='relative w-[260px] h-[200px] overflow-hidden'>
                         <Image
                             src={product?.image || 'assets/images/amazon.png'}
@@ -23,20 +23,21 @@ export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
                             quality={100}
                         />
                     </figure>
-                    <div className='m flex flex-wrap gap-1'>
-                        <Badge variant='secondary'>
-                            {product?.discountedPercent}
-                        </Badge>
-
-                        {product?.avaliableCoupon && (
-                            <Badge>{product?.avaliableCoupon}</Badge>
+                    <div className='flex flex-wrap gap-1'>
+                        {product?.price && (
+                            <Badge
+                                variant='secondary'
+                                className='text-sm'
+                            >
+                                {product?.price}
+                            </Badge>
                         )}
+
+                        {product?.discounted && <Badge className='text-sm'>{product?.discounted}</Badge>}
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <h3 className='text-sm font-semibold line-clamp-2'>
-                        {product?.title}
-                    </h3>
+                    <h3 className='text-sm font-semibold line-clamp-2'>{product?.title}</h3>
                 </CardFooter>
             </Card>
         )
