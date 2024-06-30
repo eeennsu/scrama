@@ -6,7 +6,7 @@ const Page: NextPage = async () => {
     const user = await getLoggedInUser()
 
     if (!user) {
-        redirect('/user/sign-in')
+        redirect('/sign-in')
     }
 
     return <main>User Profile Page</main>

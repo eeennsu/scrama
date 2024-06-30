@@ -13,9 +13,9 @@ export const PATH_KEYS = {
         return PATH_KEYS.root.concat('user')
     },
     signUp() {
-        return PATH_KEYS.user().concat('sign-up')
+        return PATH_KEYS.root.concat('sign-up')
     },
     signIn() {
-        return PATH_KEYS.user().concat('sign-in')
+        return PATH_KEYS.root.concat('sign-in')
     },
 }

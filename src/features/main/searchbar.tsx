@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from '@/shared/ui/components/button'
+import { Button } from '@/shared/components/ui/button'
 import { FormEvent, useState, type FC } from 'react'
 import { useRouter } from 'next/navigation'
-import { cn } from '@/shared/lib'
+import { cn } from '@/shared/utils'
 
 interface Props {
     inputClassName?: string

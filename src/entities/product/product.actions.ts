@@ -50,7 +50,9 @@ export const requestGetTodayDealsAmazonProductList = async () => {
     }
 }
 
-export const requestGetSearchedProductList = async (url: string): Promise<SearchedProductType[]> => {
+export const requestGetSearchedProductList = async (
+    url: string
+): Promise<SearchedProductType[]> => {
     try {
         const options = getBrightDataOptions()
         const { data } = await axios.get(url, options)

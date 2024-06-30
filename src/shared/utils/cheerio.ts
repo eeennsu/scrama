@@ -22,8 +22,16 @@ export const generateTitle = (product: Cheerio<Element>, link?: string): string 
 export const extractSearchedProductPrice = (element: Cheerio<Element>): string => {
     return (
         element.find('span.a-price span.a-offscreen').first().text().trim() ||
-        element.find('div[data-cy="secondary-offer-recipe"] span.a-color-base').first().text().trim() ||
-        element.find('div[data-cy="price-recipe"] .a-row.a-size-base.a-color-base').eq(1).text().trim()
+        element
+            .find('div[data-cy="secondary-offer-recipe"] span.a-color-base')
+            .first()
+            .text()
+            .trim() ||
+        element
+            .find('div[data-cy="price-recipe"] .a-row.a-size-base.a-color-base')
+            .eq(1)
+            .text()
+            .trim()
     )
 }
 
@@ -79,7 +87,10 @@ export const extractDescriptions = ($: CheerioAPI): string[] => {
 }
 
 export const extractLastMonthPurchases = (element: Cheerio<Element>): number | null => {
-    const purchasesText = element.find('.a-size-base.a-color-secondary:contains("bought in past month")').text().trim()
+    const purchasesText = element
+        .find('.a-size-base.a-color-secondary:contains("bought in past month")')
+        .text()
+        .trim()
 
     const boughtInPastMonthNumber = parseInt(purchasesText.replace(/[^0-9]/g, ''), 10)
 

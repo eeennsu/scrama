@@ -83,7 +83,9 @@ export const ProductPrice: FC<Props> = ({ price, rating, lastMonthPurchases, rev
 
                 {lastMonthPurchases ? (
                     <p className='text-xs text-black opacity-50'>
-                        <span className='text-primary-green font-semibold'>{lastMonthPurchases}K</span>
+                        <span className='text-primary-green font-semibold'>
+                            {lastMonthPurchases}K
+                        </span>
                         &nbsp; bought in past month
                     </p>
                 ) : null}

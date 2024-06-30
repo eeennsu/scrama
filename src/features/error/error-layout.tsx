@@ -16,10 +16,16 @@ export const ErrorLayout: FC<Props> = ({ error, reset }) => {
     return (
         <main className='min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4'>
             <div className='bg-white shadow-lg rounded-lg p-8 max-w-3xl w-full text-center'>
-                <h1 className='text-2xl font-bold text-gray-800 mb-4'>Oops! Something went wrong</h1>
+                <h1 className='text-2xl font-bold text-gray-800 mb-4'>
+                    Oops! Something went wrong
+                </h1>
                 <p className='text-gray-600 mb-4 break-words'>
                     {error.message}
-                    {error.digest && <span className='mt-2 text-sm text-gray-500'>Error digest: {error.digest}</span>}
+                    {error.digest && (
+                        <span className='mt-2 text-sm text-gray-500'>
+                            Error digest: {error.digest}
+                        </span>
+                    )}
                 </p>
                 <button
                     onClick={() => reset()}

@@ -1,5 +1,10 @@
 import type { FC } from 'react'
-import { ProductInfoCard, ProductPrice, ProductTitle, ProductDescriptions } from '@/features/product'
+import {
+    ProductInfoCard,
+    ProductPrice,
+    ProductTitle,
+    ProductDescriptions,
+} from '@/features/product'
 import { DetailProductType } from '@/entities/product'
 import Image from 'next/image'
 

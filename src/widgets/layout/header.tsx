@@ -7,7 +7,10 @@ import { PATH_KEYS } from '@/shared/route'
 export const Header: FC = () => {
     return (
         <header className='w-full border-b'>
-            <nav className='flex justify-between items-center px-6 md:px-20 py-4  max-w-[1500px] mx-auto w-full'>
+            <nav
+                aria-label='header nav menu'
+                className='flex justify-between items-center px-6 md:px-20 py-4  max-w-[1500px] mx-auto w-full'
+            >
                 <Link
                     href={PATH_KEYS.main()}
                     className='flex items-center gap-1'

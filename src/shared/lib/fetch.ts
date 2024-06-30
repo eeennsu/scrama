@@ -21,4 +21,3 @@ export const getBrightDataOptions = (): AxiosRequestConfig & Record<string, any>
         rejectUnauthorized: false,
     }
 }
-

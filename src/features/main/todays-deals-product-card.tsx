@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { TodaysDealsProductType } from '@/entities/product'
-import { Card, CardContent, CardFooter } from '@/shared/ui/components/card'
-import { Badge } from '@/shared/ui/components/badge'
+import { Card, CardContent, CardFooter } from '@/shared/components/ui/card'
+import { Badge } from '@/shared/components/ui/badge'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PATH_KEYS } from '@/shared/route'
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
-    const ProductCard = () => {
+    const Component = () => {
         return (
             <Card className='w-[310px] group shadow-md'>
                 <CardContent className='flex flex-col w-full pb-3 pt-6 gap-3'>
@@ -48,9 +48,9 @@ export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
 
     return product?.url ? (
         <Link href={PATH_KEYS.product().concat(`?url=${encodeURIComponent(product?.url)}`)}>
-            <ProductCard />
+            <Component />
         </Link>
     ) : (
-        <ProductCard />
+        <Component />
     )
 }

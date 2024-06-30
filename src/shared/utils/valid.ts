@@ -14,7 +14,11 @@ export const isValidAmazonLink = (url: string): boolean => {
         const parsedUrl = new URL(url)
         const hostname = parsedUrl.hostname
 
-        return hostname.includes('amazon.com') || hostname.includes('amazon.') || hostname.includes('amazon')
+        return (
+            hostname.includes('amazon.com') ||
+            hostname.includes('amazon.') ||
+            hostname.includes('amazon')
+        )
     } catch (error) {
         return false
     }

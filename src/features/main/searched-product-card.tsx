@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 import type { SearchedProductType } from '@/entities/product/product.types'
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/components/card'
-import { Badge } from '@/shared/ui/components/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { Badge } from '@/shared/components/ui/badge'
 import { FileQuestion, HeartOff, Star, StarOff } from 'lucide-react'
-import { cn } from '@/shared/lib'
+import { PATH_KEYS } from '@/shared/route'
 import Image from 'next/image'
 import Link from 'next/link'
-import { PATH_KEYS } from '@/shared/route'
+import { cn } from '@/shared/utils'
 
 interface Props {
     product: SearchedProductType
@@ -15,7 +15,7 @@ interface Props {
 export const SearchedProductCard: FC<Props> = ({ product }) => {
     const isNotLongLeft = !!product?.stock
 
-    const ProductCard = () => {
+    const Component = () => {
         return (
             <Card
                 className={cn(
@@ -110,11 +110,11 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
             className='flex-1'
             href={PATH_KEYS.search().concat(`?url=${encodeURIComponent(product?.url)}`)}
         >
-            <ProductCard />
+            <Component />
         </Link>
     ) : (
         <div className='flex-1'>
-            <ProductCard />
+            <Component />
         </div>
     )
 }

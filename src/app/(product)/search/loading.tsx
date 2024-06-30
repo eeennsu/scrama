@@ -1,4 +1,4 @@
-import { Skeleton } from '@/shared/ui/components/skeleton'
+import { Skeleton } from '@/shared/components/ui/skeleton'
 import type { FC } from 'react'
 
 const SearchLoading: FC = () => {

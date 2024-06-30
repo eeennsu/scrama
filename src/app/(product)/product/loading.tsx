@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { Skeleton } from '@/shared/ui/components/skeleton'
+import { Skeleton } from '@/shared/components/ui/skeleton'
 
 const ProductLoading: FC = () => {
     return (
