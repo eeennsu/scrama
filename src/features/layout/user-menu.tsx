@@ -11,7 +11,7 @@ export const UserMenu: FC = async () => {
 
     return (
         <section className='flex gap-4'>
-            {!user ? (
+            {user ? (
                 navUserMenu.map((menu) => (
                     <UserMenuItem
                         key={menu.src}

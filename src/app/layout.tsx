@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { Header } from '@/widgets/layout/header'
 import '@/shared/css/globals.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
+import { Toaster } from '@/shared/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +24,7 @@ export default function RootLayout({
                     <Header />
                     <div className='container w-full mx-auto flex flex-col flex-1'>{children}</div>
                 </div>
+                <Toaster />
             </body>
         </html>
     )

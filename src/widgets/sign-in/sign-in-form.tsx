@@ -1,13 +1,14 @@
 'use client'
 
-import type { FC } from 'react'
+import { useState, type FC } from 'react'
+import { Fragment } from 'react/jsx-runtime'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { UserLoginSchema } from '@/entities/user/user.zod'
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
-
+import { SignInUser, UserSignInFormSchema, UserSignInFormType } from '@/entities/user'
+import { Loader2 } from 'lucide-react'
 import {
     Form as FormProvider,
     FormControl,
@@ -20,15 +21,29 @@ import {
 export const SignInForm: FC = () => {
     const navigate = useRouter()
 
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const form = useForm({
-        resolver: zodResolver(UserLoginSchema),
+        resolver: zodResolver(UserSignInFormSchema),
         defaultValues: {
             email: '',
             password: '',
         },
     })
 
-    const onSubmit = async () => {}
+    const onSubmit = async (data: UserSignInFormType) => {
+        try {
+            setIsLoading(true)
+            await SignInUser(data)
+
+            navigate.back()
+        } catch (error) {
+            console.error(error)
+            navigate.refresh()
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     return (
         <section className='w-full flex'>
@@ -47,6 +62,7 @@ export const SignInForm: FC = () => {
                                     <Input
                                         type='email'
                                         placeholder='email@example.com'
+                                        isSemibold
                                         {...field}
                                     />
                                 </FormControl>
@@ -65,6 +81,7 @@ export const SignInForm: FC = () => {
                                     <Input
                                         type='password'
                                         placeholder='password'
+                                        isSemibold
                                         {...field}
                                     />
                                 </FormControl>
@@ -73,7 +90,19 @@ export const SignInForm: FC = () => {
                         )}
                     />
 
-                    <Button type='submit'>Login</Button>
+                    <Button
+                        type='submit'
+                        disabled={isLoading}
+                    >
+                        {!isLoading ? (
+                            'Login'
+                        ) : (
+                            <Fragment>
+                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                                Please wait..
+                            </Fragment>
+                        )}
+                    </Button>
                 </form>
             </FormProvider>
         </section>

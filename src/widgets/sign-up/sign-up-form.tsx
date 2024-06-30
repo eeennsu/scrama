@@ -1,13 +1,16 @@
 'use client'
 
-import type { FC } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, type FC } from 'react'
+import { Fragment } from 'react/jsx-runtime'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { UserSignUpSchema } from '@/entities/user/user.zod'
+import { UserSignUpFormSchema } from '@/entities/user/user.zod'
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
-import { UserSignUpType, signUpUser } from '@/entities/user'
+import { UserSignUpFormType, signUpUser } from '@/entities/user'
+import { PATH_KEYS } from '@/shared/route'
+import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import {
     Form as FormProvider,
     FormControl,
@@ -20,8 +23,10 @@ import {
 export const SignUpForm: FC = () => {
     const navigate = useRouter()
 
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const form = useForm({
-        resolver: zodResolver(UserSignUpSchema),
+        resolver: zodResolver(UserSignUpFormSchema),
         defaultValues: {
             email: '',
             password: '',
@@ -30,8 +35,13 @@ export const SignUpForm: FC = () => {
         },
     })
 
-    const onSubmit = (data: UserSignUpType) => {
-        if (data.password !== data.passwordConfirmation) {
+    const onSubmit = async ({
+        email,
+        password,
+        passwordConfirmation,
+        username,
+    }: UserSignUpFormType) => {
+        if (password !== passwordConfirmation) {
             form.setError('passwordConfirmation', {
                 message: 'Passwords do not match',
             })
@@ -40,10 +50,15 @@ export const SignUpForm: FC = () => {
         }
 
         try {
-            signUpUser(data.email, data.password, data.username)
+            setIsLoading(true)
+            await signUpUser({ email, password, username })
+
+            navigate.push(PATH_KEYS.signIn())
         } catch (error) {
             console.error(error)
             navigate.refresh()
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -63,6 +78,7 @@ export const SignUpForm: FC = () => {
                                 <FormControl>
                                     <Input
                                         placeholder='username'
+                                        isSemibold
                                         {...field}
                                     />
                                 </FormControl>
@@ -81,6 +97,7 @@ export const SignUpForm: FC = () => {
                                     <Input
                                         type='email'
                                         placeholder='username@email.com'
+                                        isSemibold
                                         {...field}
                                     />
                                 </FormControl>
@@ -97,7 +114,9 @@ export const SignUpForm: FC = () => {
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
                                     <Input
+                                        type='password'
                                         placeholder='password'
+                                        isSemibold
                                         {...field}
                                     />
                                 </FormControl>
@@ -114,7 +133,9 @@ export const SignUpForm: FC = () => {
                                 <FormLabel>Password Confirmation</FormLabel>
                                 <FormControl>
                                     <Input
+                                        type='password'
                                         placeholder='password confirmation'
+                                        isSemibold
                                         {...field}
                                     />
                                 </FormControl>
@@ -123,7 +144,19 @@ export const SignUpForm: FC = () => {
                         )}
                     />
 
-                    <Button type='submit'>Submit</Button>
+                    <Button
+                        type='submit'
+                        disabled={isLoading}
+                    >
+                        {!isLoading ? (
+                            'Submit'
+                        ) : (
+                            <Fragment>
+                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                                Please wait..
+                            </Fragment>
+                        )}
+                    </Button>
                 </form>
             </FormProvider>
         </section>
