@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Imagegallery, { ReactImageGalleryItem } from 'react-image-gallery'
 import Image from 'next/image'
 import Link from 'next/link'
+import { PATH_KEYS } from '@/shared/route'
 interface Props {
     productImages?: CarouselProductImageType[]
 }
@@ -26,14 +27,20 @@ export const HeroCarousel: FC<Props> = ({ productImages }) => {
                                 <Link
                                     href={
                                         product?.url
-                                            ? `/product?url=${encodeURIComponent(product?.url)}`
+                                            ? PATH_KEYS.product().concat(
+                                                  `?url=${encodeURIComponent(product?.url)}`
+                                              )
                                             : 'https://www.amazon.com'
                                     }
                                 >
                                     <figure
                                         key={item?.original}
                                         className='w-[464px] h-[464px] relative'
-                                        onClick={() => product?.url && product?.url && router.push(product?.url)}
+                                        onClick={() =>
+                                            product?.url &&
+                                            product?.url &&
+                                            router.push(product?.url)
+                                        }
                                     >
                                         <Image
                                             src={item.original}

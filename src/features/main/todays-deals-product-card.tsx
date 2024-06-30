@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter } from '@/shared/ui/components/card'
 import { Badge } from '@/shared/ui/components/badge'
 import Image from 'next/image'
 import Link from 'next/link'
+import { PATH_KEYS } from '@/shared/route'
 
 interface Props {
     product: TodaysDealsProductType
@@ -33,7 +34,9 @@ export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
                             </Badge>
                         )}
 
-                        {product?.discounted && <Badge className='text-sm'>{product?.discounted}</Badge>}
+                        {product?.discounted && (
+                            <Badge className='text-sm'>{product?.discounted}</Badge>
+                        )}
                     </div>
                 </CardContent>
                 <CardFooter>
@@ -44,7 +47,7 @@ export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
     }
 
     return product?.url ? (
-        <Link href={`/product?url=${encodeURIComponent(product?.url)}`}>
+        <Link href={PATH_KEYS.product().concat(`?url=${encodeURIComponent(product?.url)}`)}>
             <ProductCard />
         </Link>
     ) : (

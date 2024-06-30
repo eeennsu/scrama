@@ -4,6 +4,7 @@ import { getLoggedInUser } from '@/shared/lib/appwrite/api/user.api'
 import { UserMenuItem } from './user-menu-item'
 import { Button } from '@/shared/ui/components/button'
 import Link from 'next/link'
+import { PATH_KEYS } from '@/shared/route'
 
 export const UserMenu: FC = async () => {
     const user = false
@@ -18,7 +19,7 @@ export const UserMenu: FC = async () => {
                     />
                 ))
             ) : (
-                <Link href='/user/sign-in'>
+                <Link href={PATH_KEYS.signIn()}>
                     <Button>Login</Button>
                 </Link>
             )}

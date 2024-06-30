@@ -6,6 +6,7 @@ import { FileQuestion, HeartOff, Star, StarOff } from 'lucide-react'
 import { cn } from '@/shared/lib'
 import Image from 'next/image'
 import Link from 'next/link'
+import { PATH_KEYS } from '@/shared/route'
 
 interface Props {
     product: SearchedProductType
@@ -47,7 +48,9 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                     </figure>
                 </CardHeader>
                 <CardContent className='py-4 flex flex-col gap-5 flex-1'>
-                    <CardTitle className='line-clamp-3 text-2xl group-hover:underline'>{product?.title}</CardTitle>
+                    <CardTitle className='line-clamp-3 text-2xl group-hover:underline'>
+                        {product?.title}
+                    </CardTitle>
                     <div className='flex flex-col gap-2 truncate'>
                         <div className='flex justify-between'>
                             {!product?.price && (
@@ -58,7 +61,9 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
                             )}
                             <div className='flex items-end gap-1.5'>
                                 {product?.price && (
-                                    <span className='text-lg font-semibold text-gray-700'>{product?.price}</span>
+                                    <span className='text-lg font-semibold text-gray-700'>
+                                        {product?.price}
+                                    </span>
                                 )}
                             </div>
 
@@ -103,7 +108,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
     return product?.url ? (
         <Link
             className='flex-1'
-            href={`/product?url=${encodeURIComponent(product?.url)}`}
+            href={PATH_KEYS.search().concat(`?url=${encodeURIComponent(product?.url)}`)}
         >
             <ProductCard />
         </Link>
