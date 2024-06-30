@@ -67,9 +67,14 @@ const config = {
                 xs: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
             },
             borderRadius: {
-                lg: 'var(--radius)',
-                md: 'calc(var(--radius) - 2px)',
-                sm: 'calc(var(--radius) - 4px)',
+                sm: '2px',
+                DEFAULT: '4px',
+                md: '6px',
+                lg: '8px',
+                xl: '12px',
+                '2xl': '16px',
+                '3xl': '20px',
+                full: '9999px',
             },
             keyframes: {
                 'accordion-down': {

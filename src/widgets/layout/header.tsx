@@ -1,4 +1,5 @@
 import type { FC } from 'react'
+import { UserMenu } from '@/features/layout'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -19,6 +20,7 @@ export const Header: FC = () => {
 
                     <p className='font-spaceGrotesk text-[21px] font-bold text-gray-700'>Scrama</p>
                 </Link>
+                <UserMenu />
             </nav>
         </header>
     )

@@ -87,3 +87,16 @@
     display: flex;
     justify-content: center;
 }
+
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: slategray;
+}
+
+::-webkit-scrollbar-track {
+    background: lightgray;
+}

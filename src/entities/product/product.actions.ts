@@ -7,7 +7,8 @@ import {
     scrapeSearchedAmazonProductList,
     scrapeTodaysDealsProductList,
 } from './product.scrape'
-import { getBrightDataOptions, retryFetch } from '@/shared/lib'
+import { getBrightDataOptions } from '@/shared/lib'
+import { retryFetch } from '@/shared/utils'
 import * as cheerio from 'cheerio'
 import axios from 'axios'
 

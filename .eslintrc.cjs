@@ -19,6 +19,7 @@ module.exports = {
         es2020: true,
     },
     rules: {
+        '@typescript-eslint/no-var-requires': 'off',
         'no-unused-labels': 'warn',
         '@typescript-eslint/no-unused-vars': 'warn',
         '@typescript-eslint/no-explicit-any': 'off',
@@ -40,8 +41,7 @@ module.exports = {
                             '@/widgets/**/*/*/*/*/**',
                             '@/app/**/*/*/*/*/**',
                         ],
-                        message:
-                            'Direct access to the internal parts of the module is prohibited',
+                        message: 'Direct access to the internal parts of the module is prohibited',
                     },
                     {
                         group: [

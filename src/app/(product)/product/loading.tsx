@@ -3,7 +3,7 @@ import { Skeleton } from '@/shared/ui/components/skeleton'
 
 const ProductLoading: FC = () => {
     return (
-        <article className='flex flex-col gap-16 flex-wrap px-6 md:px-20 py-6 xl:py-12'>
+        <section className='flex flex-col gap-16 flex-wrap px-6 md:px-20 py-6 xl:py-12'>
             <section className='flex gap-28 xl:flex-row flex-col'>
                 <div className='flex-1 flex flex-col'>
                     <section className='flex justify-between flex-col items-start gap-5 flex-wrap pb-6'>
@@ -58,7 +58,7 @@ const ProductLoading: FC = () => {
                     </ul>
                 </div>
             </section>
-        </article>
+        </section>
     )
 }
 
