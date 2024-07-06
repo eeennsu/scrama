@@ -39,9 +39,8 @@ export const SignInForm: FC = () => {
             navigate.back()
         } catch (error) {
             console.error(error)
+
             navigate.refresh()
-        } finally {
-            setIsLoading(false)
         }
     }
 

@@ -58,10 +58,11 @@ module.exports = {
         ],
         'import/no-extraneous-dependencies': [
             'error',
-            { devDependencies: false, optionalDependencies: false, peerDependencies: false },
+            { devDependencies: true, optionalDependencies: false, peerDependencies: false },
         ],
         'import/prefer-default-export': 'off',
         'import/no-unresolved': 'off',
+        'import/no-named-as-default': 'off',
     },
     overrides: [
         {
