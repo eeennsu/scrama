@@ -1,17 +1,16 @@
 import type { FC } from 'react'
 import { TodaysDealsProductType } from '@/entities/product'
-import { Card, CardContent, CardFooter } from '@/shared/components/ui/card'
-import { Badge } from '@/shared/components/ui/badge'
+import { Card, CardContent, CardFooter } from '@/shared/ui/components/card'
+import { Badge } from '@/shared/ui/components/badge'
 import Image from 'next/image'
 import Link from 'next/link'
-import { PATH_KEYS } from '@/shared/route'
 
 interface Props {
     product: TodaysDealsProductType
 }
 
-export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
-    const Component = () => {
+export const DisplayProdcutCard: FC<Props> = ({ product }) => {
+    const ProductCard = () => {
         return (
             <Card className='w-[310px] group shadow-md'>
                 <CardContent className='flex flex-col w-full pb-3 pt-6 gap-3'>
@@ -34,23 +33,21 @@ export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
                             </Badge>
                         )}
 
-                        {product?.discounted && (
-                            <Badge className='text-sm'>{product?.discounted}</Badge>
-                        )}
+                        {product?.discounted && <Badge className='text-sm'>{product?.discounted}</Badge>}
                     </div>
                 </CardContent>
-                <CardFooter>
-                    <h3 className='text-sm font-semibold line-clamp-2'>{product?.title}</h3>
+                <CardFooter className='flex justify-center'>
+                    <h3 className='text-lg font-semibold line-clamp-2'>{product?.title}</h3>
                 </CardFooter>
             </Card>
         )
     }
 
     return product?.url ? (
-        <Link href={PATH_KEYS.product().concat(`?url=${encodeURIComponent(product?.url)}`)}>
-            <Component />
+        <Link href={product?.url}>
+            <ProductCard />
         </Link>
     ) : (
-        <Component />
+        <ProductCard />
     )
 }

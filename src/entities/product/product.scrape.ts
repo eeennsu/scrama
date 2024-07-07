@@ -3,6 +3,7 @@ import type {
     DetailProductType,
     SearchedProductType,
     CarouselProductImageType,
+    DispayProductType,
 } from './product.types'
 import type { CheerioAPI } from 'cheerio'
 import {
@@ -11,6 +12,7 @@ import {
     extractLastMonthPurchases,
     extractPrice,
     extractSearchedProductPrice,
+    shuffleArray,
 } from '@/shared/utils'
 
 export const scrapeAmazonProductsImages = ($: CheerioAPI): CarouselProductImageType[] => {
@@ -41,6 +43,7 @@ export const scrapeAmazonProductsImages = ($: CheerioAPI): CarouselProductImageT
     return amazonProductsImages
 }
 
+// deprecated
 export const scrapeTodaysDealsProductList = ($: CheerioAPI): TodaysDealsProductType[] => {
     const todaysDealsProductList: TodaysDealsProductType[] = []
 
@@ -203,4 +206,19 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
     }
 
     return amazonProduct
+}
+
+export const scrapeDisplayProductList = ($: CheerioAPI): DispayProductType[] => {
+    const items: DispayProductType[] = []
+    $('div._fluid-quad-image-label-v2_style_quadrantContainer__3TMqG').each((i, element) => {
+        const image = $(element).find('img').attr('data-a-hires')
+
+        const url = 'https://www.amazon.com'.concat($(element).find('a').attr('href') || '')
+
+        const title = $(element).find('a').attr('aria-label')
+
+        items.push({ id: i, title, image, url })
+    })
+
+    return shuffleArray(items)
 }
