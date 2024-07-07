@@ -1,15 +1,15 @@
 'use server'
 
 import type {
-    DetailProductType,
-    SearchedProductType,
-    DispayProductType,
     CarouselProductImageType,
+    DetailProductType,
+    DisplayProductType,
+    SearchedProductType,
 } from './product.types'
 import {
     scrapeAmazonProductsImages,
-    scrapeDisplayProductList,
     scrapeDetailAmazonProduct,
+    scrapeDisplayProductList,
     scrapeSearchedAmazonProductList,
     scrapeTodaysDealsProductList,
 } from './product.scrape'
@@ -18,7 +18,9 @@ import { retryFetch } from '@/shared/utils'
 import * as cheerio from 'cheerio'
 import axios from 'axios'
 
-export async function requestGetAmazonProductsImages(): Promise<CarouselProductImageType[] | undefined> {
+export async function requestGetAmazonProductsImages(): Promise<
+    CarouselProductImageType[] | undefined
+> {
     const fetch = async () => {
         try {
             const options = getBrightDataOptions()
@@ -87,7 +89,8 @@ export async function requestGetDetailAmazonProduct(url: string): Promise<Detail
         throw new Error(`Failed to scrape detail product: ${error.message}`)
     }
 }
-export async function requestGetDispayProducts(): Promise<DispayProductType[] | undefined> {
+
+export async function requestGetDispayProducts(): Promise<DisplayProductType[] | undefined> {
     const fetch = async () => {
         try {
             const options = getBrightDataOptions()

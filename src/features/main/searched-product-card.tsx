@@ -6,7 +6,7 @@ import { FileQuestion, HeartOff, Star, StarOff } from 'lucide-react'
 import { PATH_KEYS } from '@/shared/route'
 import Image from 'next/image'
 import Link from 'next/link'
-import { cn } from '@/shared/utils'
+import { cn } from '@/shared/utils/shadcn-utils'
 
 interface Props {
     product: SearchedProductType
@@ -108,7 +108,7 @@ export const SearchedProductCard: FC<Props> = ({ product }) => {
     return product?.url ? (
         <Link
             className='flex-1'
-            href={PATH_KEYS.search().concat(`?url=${encodeURIComponent(product?.url)}`)}
+            href={PATH_KEYS.product().concat(`?url=${encodeURIComponent(product?.url)}`)}
         >
             <Component />
         </Link>

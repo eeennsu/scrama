@@ -13,4 +13,4 @@ export type DetailProductType = z.infer<typeof DetailProductSchema>
 export type TodaysDealsProductType = z.infer<typeof TodaysDealsProductSchema>
 export type SearchedProductType = z.infer<typeof SearchedProductSchema>
 export type ProductCommentType = z.infer<typeof ProductCommentSchema>
-export type DispayProductType = z.infer<typeof DisplayProductSchema>
+export type DisplayProductType = z.infer<typeof DisplayProductSchema>

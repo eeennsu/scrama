@@ -3,7 +3,7 @@ import type {
     DetailProductType,
     SearchedProductType,
     CarouselProductImageType,
-    DispayProductType,
+    DisplayProductType,
 } from './product.types'
 import type { CheerioAPI } from 'cheerio'
 import {
@@ -208,10 +208,11 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
     return amazonProduct
 }
 
-export const scrapeDisplayProductList = ($: CheerioAPI): DispayProductType[] => {
-    const items: DispayProductType[] = []
+export const scrapeDisplayProductList = ($: CheerioAPI): DisplayProductType[] => {
+    const items: DisplayProductType[] = []
     $('div._fluid-quad-image-label-v2_style_quadrantContainer__3TMqG').each((i, element) => {
-        const image = $(element).find('img').attr('data-a-hires')
+        const image =
+            $(element).find('img').attr('data-a-hires') || $(element).find('img').attr('src')
 
         const url = 'https://www.amazon.com'.concat($(element).find('a').attr('href') || '')
 
