@@ -6,8 +6,8 @@ import { FileQuestion, HeartOff, Star, StarOff } from 'lucide-react'
 import { PATH_KEYS } from '@/shared/route'
 import Image from 'next/image'
 import Link from 'next/link'
-import { cn } from '@/shared/utils/shadcn-utils'
-
+import { cn } from '@/shared/utils'
+cn
 interface Props {
     product: SearchedProductType
 }

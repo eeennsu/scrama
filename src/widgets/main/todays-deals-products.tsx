@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { requestGetTodayDealsAmazonProductList } from '@/entities/product'
-import { DisplayProdcutCard } from '@/features/main'
+import { DisplayProductCard } from '@/features/main'
 
 // deprecated
 export const TodaysDealsProducts: FC = async () => {
@@ -13,7 +13,7 @@ export const TodaysDealsProducts: FC = async () => {
             <div className='flex flex-wrap max-xl:justify-center gap-4 xl:gap-x-8 xl:gap-y-12'>
                 {todaysDealsProduct?.length > 0 &&
                     todaysDealsProduct?.map((product, i) => (
-                        <DisplayProdcutCard
+                        <DisplayProductCard
                             key={product?.id || i}
                             product={product}
                         />
