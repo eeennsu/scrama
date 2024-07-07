@@ -1,15 +1,15 @@
 import type { NextPage } from 'next'
-import { Intro, TodaysDealsProducts } from '@/widgets/main'
+import { Intro, DisplayProducts } from '@/widgets/main'
 
 const MainPage: NextPage = () => {
     return (
         <main className='flex flex-col flex-1'>
             <Intro />
-            <TodaysDealsProducts />
+            <DisplayProducts />
         </main>
     )
 }
 
 export default MainPage
 
-export const revalidate = 7200
+export const revalidate = 600

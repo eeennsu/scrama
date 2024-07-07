@@ -3,6 +3,7 @@ import type {
     DetailProductType,
     SearchedProductType,
     CarouselProductImageType,
+    DisplayProductType,
 } from './product.types'
 import type { CheerioAPI } from 'cheerio'
 import {
@@ -11,6 +12,7 @@ import {
     extractLastMonthPurchases,
     extractPrice,
     extractSearchedProductPrice,
+    shuffleArray,
 } from '@/shared/utils'
 
 export const scrapeAmazonProductsImages = ($: CheerioAPI): CarouselProductImageType[] => {
@@ -49,8 +51,13 @@ export const scrapeTodaysDealsProductList = ($: CheerioAPI): TodaysDealsProductT
 
         const title = $(element).find('span._ZGlzY_title_3k8Rn').text().trim()
         const link = $(element).find('a.a-link-normal').attr('href')
-        const image = $(element).find('img').attr('data-a-hires') || $(element).find('img').attr('src')
-        const price = $(element).find('div._ZGlzY_priceToPay_EfL5V span.a-price span.a-offscreen').first().text().trim()
+        const image =
+            $(element).find('img').attr('data-a-hires') || $(element).find('img').attr('src')
+        const price = $(element)
+            .find('div._ZGlzY_priceToPay_EfL5V span.a-price span.a-offscreen')
+            .first()
+            .text()
+            .trim()
         const discounted = $('._ZGlzY_badgeLabel_1DEKK .a-size-mini').first().text().trim()
         const url = link?.startsWith('http') ? link : `https://www.amazon.com${link}`
 
@@ -119,7 +126,10 @@ export const scrapeSearchedAmazonProductList = ($: CheerioAPI): SearchedProductT
 }
 
 export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
-    const title = $('#titleSection').text().trim() || $('#title').text().trim() || $('#productTitle').text().trim()
+    const title =
+        $('#titleSection').text().trim() ||
+        $('#title').text().trim() ||
+        $('#productTitle').text().trim()
 
     const discountedPrice = extractPrice(
         $('span.a-price span.a-offscreen'),
@@ -195,4 +205,20 @@ export const scrapeDetailAmazonProduct = ($: CheerioAPI): DetailProductType => {
     }
 
     return amazonProduct
+}
+
+export const scrapeDisplayProductList = ($: CheerioAPI): DisplayProductType[] => {
+    const items: DisplayProductType[] = []
+    $('div._fluid-quad-image-label-v2_style_quadrantContainer__3TMqG').each((i, element) => {
+        const image =
+            $(element).find('img').attr('data-a-hires') || $(element).find('img').attr('src')
+
+        const url = 'https://www.amazon.com'.concat($(element).find('a').attr('href') || '')
+
+        const title = $(element).find('a').attr('aria-label')
+
+        items.push({ id: i, title, image, url })
+    })
+
+    return shuffleArray(items)
 }

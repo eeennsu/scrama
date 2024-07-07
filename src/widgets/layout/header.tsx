@@ -1,8 +1,7 @@
 import type { FC } from 'react'
-import { UserMenu } from '@/features/layout'
+import { PATH_KEYS } from '@/shared/route'
 import Image from 'next/image'
 import Link from 'next/link'
-import { PATH_KEYS } from '@/shared/route'
 
 export const Header: FC = () => {
     return (
@@ -21,7 +20,6 @@ export const Header: FC = () => {
 
                     <p className='font-spaceGrotesk text-[21px] font-bold text-gray-700'>Scrama</p>
                 </Link>
-                <UserMenu />
             </nav>
         </header>
     )
