@@ -1,10 +1,9 @@
-import { ProductCommentType } from '@/entities/product'
+import type { ProductCommentType } from '@/entities/product'
 import cheerio, { Cheerio, CheerioAPI, Element } from 'cheerio'
 
 export const generateTitle = (product: Cheerio<Element>, link?: string): string => {
     const title = product.find('.a-size-medium.a-color-base.a-text-normal').text()
 
-    // If title is empty
     if (title === '') {
         const urlSegment = link
 

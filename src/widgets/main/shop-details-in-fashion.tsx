@@ -1,18 +1,18 @@
 import type { FC } from 'react'
-import { requestGetTodayDealsAmazonProductList } from '@/entities/product'
+import { requestGetDispayProducts } from '@/entities/product'
 import { DisplayProdcutCard } from '@/features/main'
 
-// deprecated
-export const TodaysDealsProducts: FC = async () => {
-    const todaysDealsProduct = await requestGetTodayDealsAmazonProductList()
+export const ShopDetailsInFashion: FC = async () => {
+    const displayProducts = await requestGetDispayProducts()
 
     return (
         <section className='flex flex-col gap-7 px-6 md:px-20 xl:pt-20 pb-8 mx-auto'>
-            <h2 className='text-gray-900 text-[32px] font-semibold'>Today&apos;s deals</h2>
+            <h2 className='text-gray-900 text-[32px] font-semibold'>Amazon Products</h2>
 
             <div className='flex flex-wrap max-xl:justify-center gap-4 xl:gap-x-8 xl:gap-y-12'>
-                {todaysDealsProduct?.length > 0 &&
-                    todaysDealsProduct?.map((product, i) => (
+                {Array.isArray(displayProducts) &&
+                    displayProducts?.length > 0 &&
+                    displayProducts?.map((product, i) => (
                         <DisplayProdcutCard
                             key={product?.id || i}
                             product={product}

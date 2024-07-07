@@ -1,8 +1,14 @@
 'use server'
 
-import type { DetailProductType, SearchedProductType } from './product.types'
+import type {
+    DetailProductType,
+    SearchedProductType,
+    DispayProductType,
+    CarouselProductImageType,
+} from './product.types'
 import {
     scrapeAmazonProductsImages,
+    scrapeDisplayProductList,
     scrapeDetailAmazonProduct,
     scrapeSearchedAmazonProductList,
     scrapeTodaysDealsProductList,
@@ -11,13 +17,14 @@ import { getBrightDataOptions, retryFetch } from '@/shared/lib'
 import * as cheerio from 'cheerio'
 import axios from 'axios'
 
-export async function requestGetAmazonProductsImages() {
+export async function requestGetAmazonProductsImages(): Promise<CarouselProductImageType[] | undefined> {
     const fetch = async () => {
         try {
             const options = getBrightDataOptions()
             const { data } = await axios.get('https://www.amazon.com/ref=nav_logo', options)
 
             const $ = cheerio.load(data)
+
             const amazonProductsImages = scrapeAmazonProductsImages($) || []
 
             return amazonProductsImages
@@ -32,6 +39,7 @@ export async function requestGetAmazonProductsImages() {
     })
 }
 
+// deprecated
 export const requestGetTodayDealsAmazonProductList = async () => {
     try {
         const options = getBrightDataOptions()
@@ -75,4 +83,21 @@ export async function requestGetDetailAmazonProduct(url: string): Promise<Detail
     } catch (error: any) {
         throw new Error(`Failed to scrape detail product: ${error.message}`)
     }
+}
+export async function requestGetDispayProducts(): Promise<DispayProductType[] | undefined> {
+    const fetch = async () => {
+        try {
+            const options = getBrightDataOptions()
+            const { data } = await axios.get('https://www.amazon.com/ref=nav_logo', options)
+
+            const $ = cheerio.load(data)
+            const dealsInFashionProducts = scrapeDisplayProductList($)
+
+            return dealsInFashionProducts
+        } catch (error: any) {
+            throw new Error(`Failed to scrape detail product: ${error.message}`)
+        }
+    }
+
+    return retryFetch({ fetch, condition: (products) => products.length > 0 })
 }

@@ -32,7 +32,7 @@ export const retryFetch = async <T>({
     condition: (data: T) => boolean
     retryCount?: number
     delay?: number
-}) => {
+}): Promise<T | undefined> => {
     let count = 0
     let error
 

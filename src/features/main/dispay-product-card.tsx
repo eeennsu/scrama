@@ -9,7 +9,7 @@ interface Props {
     product: TodaysDealsProductType
 }
 
-export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
+export const DisplayProdcutCard: FC<Props> = ({ product }) => {
     const ProductCard = () => {
         return (
             <Card className='w-[310px] group shadow-md'>
@@ -36,15 +36,15 @@ export const TodaysDealsProductCard: FC<Props> = ({ product }) => {
                         {product?.discounted && <Badge className='text-sm'>{product?.discounted}</Badge>}
                     </div>
                 </CardContent>
-                <CardFooter>
-                    <h3 className='text-sm font-semibold line-clamp-2'>{product?.title}</h3>
+                <CardFooter className='flex justify-center'>
+                    <h3 className='text-lg font-semibold line-clamp-2'>{product?.title}</h3>
                 </CardFooter>
             </Card>
         )
     }
 
     return product?.url ? (
-        <Link href={`/product?url=${encodeURIComponent(product?.url)}`}>
+        <Link href={product?.url}>
             <ProductCard />
         </Link>
     ) : (

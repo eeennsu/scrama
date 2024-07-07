@@ -64,3 +64,10 @@ export const DetailProductSchema = CommonProductSchema.omit({
     }),
     comments: z.array(ProductCommentSchema),
 })
+
+export const DisplayProductSchema = CommonProductSchema.pick({
+    id: true,
+    title: true,
+    image: true,
+    url: true,
+})
