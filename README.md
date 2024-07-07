@@ -1,7 +1,10 @@
 # Scrama
 - Scrape + Amazon 
 - 아마존닷컴 사이트의 상품들을 스크래핑 (https://www.amazon.com/)
-- 작업기간 약 1주
+
+# Deployed Site URL
+- deploy - vercel
+https://eeennsu-scrama.vercel.app/
 
 # Stacks
 - front - Next.js
@@ -14,7 +17,7 @@
   - 메인 페이지
       - 아마존 상품 검색 폼   
       - 아마존 메인 페이지 상품의 대표 5개 이미지를 스크래핑해와 케러셀로 띄움
-      - 아마존의 Today's Deals 페이지의 상품들 대표 8개를 스크래핑
+      - 아마존의 메인페이지의 상품들을 스크래핑하여 띄움
 
   - 검색결과 페이지
       - 아마존 상품 검색 폼
