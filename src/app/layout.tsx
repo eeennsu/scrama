@@ -21,10 +21,11 @@ export default function RootLayout({
         <html lang='en'>
             <body className={inter.className}>
                 <div className='flex w-full min-h-dvh flex-col'>
-                    <Header />
+                    {/* <Header /> */}
+                    nav!
                     <div className='container w-full mx-auto flex flex-col flex-1'>{children}</div>
                 </div>
-                <Toaster />
+                {/* <Toaster /> */}
             </body>
         </html>
     )

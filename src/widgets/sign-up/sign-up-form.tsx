@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { UserSignUpFormSchema } from '@/entities/user/user.zod'
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
-import { UserSignUpFormType, signUpUser } from '@/entities/user'
+import { UserSignUpFormType } from '@/entities/user'
 import { PATH_KEYS } from '@/shared/route'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -51,7 +51,7 @@ export const SignUpForm: FC = () => {
 
         try {
             setIsLoading(true)
-            await signUpUser({ email, password, username })
+            // await signUpUser({ email, password, username })
 
             navigate.push(PATH_KEYS.signIn())
         } catch (error) {

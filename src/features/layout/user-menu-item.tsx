@@ -2,7 +2,7 @@
 
 import type { FC } from 'react'
 import type { NavUserMenu as Props } from '@/shared/constants'
-import { logoutUser } from '@/entities/user'
+// import { logoutUser } from '@/entities/user'
 import { useRouter } from 'next/navigation'
 import { PATH_KEYS } from '@/shared/route'
 import Image from 'next/image'
@@ -11,7 +11,7 @@ import Link from 'next/link'
 export const UserMenuItem: FC<Props> = ({ src, alt, href }) => {
     const navigate = useRouter()
     const onLogout = async () => {
-        await logoutUser()
+        // await logoutUser()
         navigate.replace(PATH_KEYS.main())
     }
 

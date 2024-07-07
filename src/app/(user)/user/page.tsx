@@ -1,10 +1,10 @@
 'use client'
 
 import type { NextPage } from 'next'
-import { getLoggedInUser } from '@/shared/lib/appwrite/api/user.api'
-import { PATH_KEYS } from '@/shared/route'
-import { redirect } from 'next/navigation'
-import { TiptapEditor, EditorHandles } from '@/shared/components/tiptap'
+// import { getLoggedInUser } from '@/shared/lib/appwrite/api/user.api'
+// import { PATH_KEYS } from '@/shared/route'
+// import { redirect } from 'next/navigation'
+// import { TiptapEditor, EditorHandles } from '@/shared/components/tiptap'
 import { useRef, useState } from 'react'
 import { Button } from '@/shared/components/ui/button'
 
@@ -16,22 +16,22 @@ const UserPage: NextPage = () => {
     //     redirect(PATH_KEYS.signIn())
     // }
 
-    const ref = useRef<EditorHandles>(null)
+    //  const ref = useRef<EditorHandles>(null)
     const [html, setHtml] = useState<string>('')
 
     return (
         <main className='flex flex-col gap-4'>
             <h1>User Profile Page</h1>
-            <TiptapEditor
+            {/* <TiptapEditor
                 ref={ref}
                 className='h-[540px] w-[910px]'
-            />
-            <Button
+            /> */}
+            {/* <Button
                 className='w-fit'
                 onClick={() => setHtml(ref.current?.getHtml() || '')}
             >
                 getHtml
-            </Button>
+            </Button> */}
             <article
                 className='mt-10 tiptap-editor-content'
                 dangerouslySetInnerHTML={{ __html: html }}
