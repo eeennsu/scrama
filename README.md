@@ -4,7 +4,7 @@
 
 # Deployed Site URL
 - deploy - vercel
-https://eeennsu-scrama.vercel.app/
+https://esbang-scrama.vercel.app/
 
 # Stacks
 - front - Next.js
